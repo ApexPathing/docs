@@ -1,0 +1,52 @@
+import { Tabs, Callout } from 'nextra/components'
+
+# FeedForward Tuner
+
+The feedforward tuner determines how much power your robot needs to overcome natural friction with the floor. By accounting for friction, your robot can accelerate faster from a stop and follow paths more precisely.
+
+There are **two separate feedforward values** to tune — one for driving and one for strafing.
+
+## How It Works
+
+Static friction means your robot needs a small amount of power applied before it actually starts moving. The feedforward constant represents this minimum power threshold. Without it, your robot will hesitate or lag at the start of every movement.
+
+## How to Run (Manual Tuner)
+
+This is a **manual tuner** — you adjust the value yourself while watching the robot.
+
+1. Open the `FeedForwardTuner` op mode on your Driver Station
+2. Start with a low constant value (e.g. `0.01`)
+3. Gradually increase the constant
+4. **Stop increasing as soon as the robot starts to move**
+5. Set the constant to just **below** that threshold — the highest value where the robot stays still
+6. Repeat separately for **drive** and **strafe**
+
+<Tabs items={['Java', 'Kotlin']}>
+  <Tabs.Tab>
+    ```java
+    // Example values (yours will vary)
+    public static double DRIVE_FEED_FORWARD = 0.055;
+    public static double STRAFE_FEED_FORWARD = 0.072;
+    ```
+  </Tabs.Tab>
+  <Tabs.Tab>
+    ```kotlin
+    // Example values (yours will vary)
+    val DRIVE_FEED_FORWARD = 0.055
+    val STRAFE_FEED_FORWARD = 0.072
+    ```
+  </Tabs.Tab>
+</Tabs>
+
+<Callout type="warning">
+  **Warning:** Setting the feedforward **too high** will cause your robot to creep forward unintentionally during autonomous. The goal is the highest value where the robot still does not move.
+</Callout>
+
+<Callout type="info">
+  **Tip:** Strafe feedforward is almost always higher than drive feedforward since strafing produces more friction on mecanum wheels.
+</Callout>
+
+## Works With
+
+- ✅ Mecanum Drive
+- ✅ Swerve Drive

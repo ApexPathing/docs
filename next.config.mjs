@@ -5,12 +5,12 @@ const withNextra = nextra({
   // ... Add Nextra-specific options here
 })
  
-// Export the final Next.js config with Nextra included
-export default withNextra({
-  async redirects() {
-    return [
-     
-    ]
+const nextConfig = {
+  output: 'export',
+  images: {
+    unoptimized: true
   }
-  // ... Add regular Next.js options here
-})
+}
+
+// Export the final Next.js config with Nextra included
+export default withNextra(nextConfig)

@@ -10,19 +10,28 @@ export const metadata = {
   title: 'Apex Pathing',
   description: 'The ultimate motion profiling and pathing library for FTC teams. Achieve smooth, reliable, and high-speed autonomous movement.',
 }
- 
-const banner = <Banner storageKey="some-key">Welcome to ApexPathing! 🎉</Banner>
-const navbar = (
-  <Navbar
-    logo={
-      <div style={{ display: 'flex', alignItems: 'center', marginLeft: '-1rem' }}>
-        <Image src="/logo.png" alt="ApexPathing" width={32} height={32} />
-        <b style={{ marginLeft: '0.5em' }}>ApexPathing</b>
-      </div>
-    }
-  />
-)
-const footer = <Footer>MIT {new Date().getFullYear()} © ApexPathing.</Footer>
+
+function PageBanner() {
+  return (
+    <Banner storageKey="some-key">Welcome to ApexPathing! 🎉</Banner>
+  )
+}
+
+function PageNavbar() {
+  return (
+    <Navbar
+      logo={<b>ApexPathing</b>}
+    />
+  )
+}
+
+function PageFooter() {
+  return (
+      <footer className={`mt-auto border-t border-fd-border border-accent-text text-accent-text py-5 px-6 text-center text-sm text-muted-foreground`}>
+        &copy; 2026 Apex Pathing. Apex Pathing is licensed under the <a href="https://example.com/" className="text-fd-foreground hover:underline">FIGURE OUT LICENSE STUFF</a>. The Apex Pathing name and logo are trademarks of Apex Pathing.
+      </footer>
+  )
+}
  
 export default async function RootLayout({ 
   children 
@@ -30,27 +39,17 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html
-      // Not required, but good for SEO
-      lang="en"
-      // Required to be set
-      dir="ltr"
-      // Suggested by `next-themes` package https://github.com/pacocoursey/next-themes#with-app
-      suppressHydrationWarning
-    >
-      <Head
-      // ... Your additional head options
-      >
+    <html lang="en" dir="ltr" suppressHydrationWarning>
+      <Head>
         {/* Your additional tags should be passed as `children` of `<Head>` element */}
       </Head>
       <body>
         <Layout
-          banner={banner}
-          navbar={navbar}
+          banner={PageBanner()}
+          navbar={PageNavbar()}
           pageMap={await getPageMap()}
           docsRepositoryBase="https://github.com/ApexPathing/main.git"
-          footer={footer}
-          // ... Your additional layout options
+          footer={PageFooter()}
         >
           
           {children}

@@ -24,5 +24,14 @@
     "pagefind": "^1.5.2",
     "tailwindcss": "^4",
     "typescript": "^5"
-  }
+  },
+  "scripts": {
+  "postbuild": "pagefind --site .next/server/app --output-path public/_pagefind"
+},
+"scripts": {
+  "dev": "next dev",
+  "build": "next build",
+  "start": "next start",
+  "postbuild": "pagefind --site .next/server/app --output-path public/_pagefind"
+}
 }

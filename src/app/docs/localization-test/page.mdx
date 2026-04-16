@@ -1,0 +1,43 @@
+import { Callout } from 'nextra/components'
+
+# Localization Test
+
+The localization test allows you to verify your robot's localization system by checking motor directions, encoder orientations, and odometry pod configurations. 
+
+<Callout type="error" emoji="⚠️">
+  **READ THIS FIRST:** Run this test **before** any other tuner. If your localization is incorrect, every other tuner will produce broken results.
+</Callout>
+
+## What It Verifies
+
+- **Motor Directions:** Ensures "Forward" actually moves the robot forward.
+- **Odometry Pods:** Checks offsets, directions, and pod types.
+- **IMU Orientation:** Verifies the internal gyroscope heading.
+
+## How to Run
+
+1.  **Initialize:** Open the `LocalizationTest` Op Mode on your Driver Station.
+2.  **Reset:** Place your robot at the center of the field (0, 0) facing the red/blue wall.
+3.  **Test Movement:** Drive the robot manually using the controller and verify the telemetry:
+
+### Verification Checklist
+
+
+| Action | Expected Result |
+| :--- | :--- |
+| **Drive Forward** | **X** coordinate should **increase** |
+| **Drive Left** | **Y** coordinate should **increase** |
+| **Spin Counter-Clockwise** | **Heading** (degrees) should **increase** |
+
+## Troubleshooting
+
+If your values are backwards:
+*   **X is decreasing:** Reverse your drive motor directions or your parallel pod encoder.
+*   **Y is decreasing:** Reverse your perpendicular pod encoder.
+*   **Heading is decreasing:** Check your IMU mounting orientation in your config file.
+
+## Compatibility
+
+*   ✅ **Mecanum Drive**
+*   ✅ **Swerve Drive**
+*   ✅ **Tank Drive**

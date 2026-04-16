@@ -5,12 +5,12 @@ const withNextra = nextra({
   // ... Add Nextra-specific options here
 })
  
+const nextConfig = {
+  output: 'export',
+  basePath: '/apex-pathing-docs',
+  images: { unoptimized: true },
+  assetPrefix: "./",
+}
+
 // Export the final Next.js config with Nextra included
-export default withNextra({
-  async redirects() {
-    return [
-     
-    ]
-  }
-  // ... Add regular Next.js options here
-})
+export default withNextra(nextConfig)

@@ -1,26 +1,28 @@
-import { Footer, Layout, Navbar } from 'nextra-theme-docs'
+import { Layout, Navbar } from 'nextra-theme-docs'
 import { Banner, Head } from 'nextra/components'
 import { getPageMap } from 'nextra/page-map'
 import 'nextra-theme-docs/style.css'
 import './globals.css'
-import Image from 'next/image'
-
  
 export const metadata = {
   title: 'Apex Pathing',
-  description: 'The ultimate motion profiling and pathing library for FTC teams. Achieve smooth, reliable, and high-speed autonomous movement.',
+  description: 'ADD TAGLINE HERE.',
 }
 
 function PageBanner() {
   return (
-    <Banner storageKey="some-key">Welcome to ApexPathing! 🎉</Banner>
+    <Banner storageKey="some-key">
+      Apex Pathing is currently not released! Join the 
+      <a href="https://discord.gg/qpP4CXaHDg" target="_blank" rel="noopener noreferrer">Discord</a>
+      to help or keep up with development.
+    </Banner>
   )
 }
 
 function PageNavbar() {
   return (
     <Navbar
-      logo={<b>ApexPathing</b>}
+      logo={<b>Apex Pathing</b>}
     />
   )
 }
@@ -33,30 +35,23 @@ function PageFooter() {
   )
 }
  
-export default async function RootLayout({ 
-  children 
-} :{
-  children: React.ReactNode
-}) {
+export default async function RootLayout({ children } :{ children: React.ReactNode }) {
   return (
     <html lang="en" dir="ltr" suppressHydrationWarning>
-      <Head>
-        {/* Your additional tags should be passed as `children` of `<Head>` element */}
-      </Head>
+      <Head/>
       <body>
        <Layout
           banner={PageBanner()}
           navbar={PageNavbar()}
           pageMap={await getPageMap()}
-          docsRepositoryBase="https://github.com/ApexPathing/main.git"
+          docsRepositoryBase="https://github.com/ApexPathing/docs"
           footer={PageFooter()}
           editLink={null}                    
           feedback={{ content: null }}
-            copyPageButton={false}        
+          copyPageButton={false}        
         >
           {children}
         </Layout>
-        
       </body>
     </html>
   )

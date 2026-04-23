@@ -7,9 +7,7 @@ const withNextra = nextra({
  
 const nextConfig = {
   output: 'export',
-  images: { unoptimized: true },
-  basePath: process.env.NODE_ENV === 'production' ? '/docs' : '',
-  assetPrefix: process.env.NODE_ENV === 'production' ? '/docs/' : '',
+  images: { unoptimized: true }
 }
 
 // Export the final Next.js config with Nextra included

@@ -12,4 +12,38 @@ import { Callout } from 'nextra/components'
 </Callout>
 
 # Getting Started
-Add instructions for manual and quickstart
+Clone the project on github and navigate to the constants file. The constants file holds three main types of constants:
+* **Follower Constants:** Constants corresponding to components of the follower
+* **Drivetrain Constants:** Constants specifically related to your drivetrain, different for each type
+* **Localizer Constants:** Constants relating to your odometry pods, encoder offsets, and more...type
+
+While tuning your robot you will fill out all the field necessary in the Constants file to make your robot run with Apex.
+This data will be acquired through the various tests for your robot, however you should fill out your localizer constants first as well as most of the drivetrain constants.
+
+# Fill Out Constants
+* Set your motor names This is in the SetDrivetrain Constants() section:
+```java
+    .setFrontLeftMotorName("frontLeftMotor")
+    .setBackLeftMotorName("backLeftMotor")
+    .setFrontRightMotorName("frontRightMotor")
+    .setBackRightMotorName("backRightMotor")```
+* Set your localizer constants: Pinpoint
+```java
+         //pinpoint name
+        .setName("pinpoint")
+        //distance for offsets
+        .setDistanceUnit(DistanceUnit.INCH)
+        .setAngleUnit(AngleUnit.DEGREES)
+        //pod offsets
+        .setXOffset(-3.31) // In distanceUnit
+        .setYOffset(-6.61) // In distanceUnit
+        //pod directions
+        .setXPodDirection(GoBildaPinpointDriver.EncoderDirection.FORWARD)
+        .setYPodDirection(GoBildaPinpointDriver.EncoderDirection.FORWARD)
+        //pod resolutions
+        .setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);```
+
+After this is done you are ready to start tuning
+
+
+

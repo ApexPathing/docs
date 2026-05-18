@@ -8,10 +8,10 @@ friction in the robot.
 ## Overview
 A PDFL controller is a controller concept developed by FTC Wolfpack Machina (18438).
 This controller contains 4 terms:
-* Proportional: Multiplied by the current positional error in inches. This term is responsible for the majorit of the robot's movement.
-* Derivative: Multiplied by the change in error since the last update. Helps to reduce oscilation.
-* Feedforward: Multipled by the target velocity in inches per second. This term helps to account for friction and intertia.
-* Lower-Limit: A lower power limit threshold that helps to increase accuracy. This term helps the control algorithm what the minimum power is to move the robot.
+* **Proportional**: Multiplied by the current positional error in inches. This term is responsible for the majorit of the robot's movement.
+* **Derivative**: Multiplied by the change in error since the last update. Helps to reduce oscilation.
+* **Feedforward**: Multipled by the target velocity in inches per second. This term helps to account for friction and intertia.
+* **Lower-Limit**: A lower power limit threshold that helps to increase accuracy. This term helps the control algorithm what the minimum power is to move the robot.
 
 ## Tuning a PDFL controller
 When tuning a PDFL controller manually, it's generally good advice to begin with the feedforward term. start at maybe 0.0001 and increase it gradually
@@ -26,5 +26,6 @@ very carefully, as too much of the D term can cause the robot to be slow and it 
 Lastly, you can add some lower limit to increase the accuracy of the controller. This term is generally best tuned through trial and error, and tested as an average over both fully charged and not completely charged batteries for best results.
 
 ## What role do PDFL controllers play in Apex Pathing?
-PDFL controllers are the main type of controller currently supported by Apex Pathing. We have plans to support other types in the future. Our library uses three PDFL controllers for path folllowing (at least on a mecanum drive):
+Apex Pathing uses a variant of PDFL controllers, called a PDL controller, which removes the feedforward term. We have plans to support other types in the future. Our library uses three PDFL controllers for path folllowing (at least on a mecanum drive):
 one for the translation direction of the robot, one for the strafing direction, and one for the heading of the robot.
+

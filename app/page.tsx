@@ -1,11 +1,18 @@
+"use client"; // 1. Added this so Framer Motion works in Next.js
+
 import './globals.css'
 import Image from 'next/image'
 import logo_icon from '../public/logo_icon.svg'
+import React from "react";
+import { BackgroundBeams } from "@/components/ui/background-beams";
 
 export default function Home() {
   return (
-    <div className="flex flex-col w-full items-center justify-center h-[calc(100vh-var(--nextra-navbar-height,4rem)-var(--nextra-banner-height,2.5rem)-3.8rem)] px-6 text-center">
-      <div className="max-w-3xl mt-16">
+    /* 2. Added "relative" and "antialiased" classes to this container wrapper */
+    <div className="flex flex-col w-full items-center justify-center h-[calc(100vh-var(--nextra-navbar-height,4rem)-var(--nextra-banner-height,2.5rem)-3.8rem)] px-6 text-center relative antialiased">
+      
+      {/* 3. Added "z-10 relative" to your content box so text stays on top of the beams */}
+      <div className="max-w-3xl mt-16 z-10 relative">
         <Image src={logo_icon} alt="Apex Pathing Logo" width={256} height={256} className="w-64 h-64 mb-6 mx-auto" />
         <h1 className="text-4xl sm:text-5xl tracking-tight font-bold mb-5">
           Apex Pathing
@@ -23,6 +30,9 @@ export default function Home() {
           </a>
         </div>
       </div>
+
+      {/* 4. Placed the beams right here at the bottom of the container */}
+      <BackgroundBeams />
     </div>
   )
 }

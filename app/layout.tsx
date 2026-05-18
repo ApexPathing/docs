@@ -3,7 +3,11 @@ import { Banner, Head } from 'nextra/components'
 import { getPageMap } from 'nextra/page-map'
 import 'nextra-theme-docs/style.css'
 import './globals.css'
- 
+import { Geist } from "next/font/google";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+
 export const metadata = {
   title: 'Apex Pathing',
   description: 'ADD TAGLINE HERE.',
@@ -46,7 +50,7 @@ function PageFooter() {
  
 export default async function RootLayout({ children } :{ children: React.ReactNode }) {
   return (
-    <html lang="en" dir="ltr" suppressHydrationWarning>
+    <html lang="en" dir="ltr" suppressHydrationWarning className={cn("font-sans", geist.variable)}>
       <Head color={{ hue: 0, saturation: 100, lightness: 45}} />
       <body>
        <Layout

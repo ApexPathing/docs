@@ -1,0 +1,26 @@
+import {Tabs, Callout, Steps } from "nextra/components";
+
+# TeleOp Test
+___
+<Steps>
+### Run the OpMode
+Select the **TeleOp Test** OpMode on your Driver Station.
+
+### Verify your setup
+Verify motor directions, odo pod directions, and your whole Apex configuration.
+
+### Drive Around and double check everything
+Drive around and make sure everything is working as expected. If you notice any issues, fix them before moving on to tuning. 
+<Callout type="warning">
+Apex runs the teleop test at a reduced speed to prevent damage to your environement in case something were to go wrong. 
+</Callout>
+
+### You're ready to move on and start making autonomous routines!
+If everything works, that means Apex has been tuned correctly!
+</Steps>
+
+## Common problems and how to fix them:
+- Robot doesn't move at all: **check constants file to make sure the PDL's have been initialized with non-zero values**
+- Controls are backwards or inverted: **check motor directions in constants file**
+- X or Y is is going the wrong way: **check odo pod directions in constants file**
+- X and Y are swapped: **check that the correct PDL coefficients are assigned to the correct directions in the constants file**

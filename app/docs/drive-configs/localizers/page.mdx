@@ -1,0 +1,45 @@
+# Localizer Configs
+___
+
+## Pinpoint Localizer
+Pinpoint constants contain:
+* device name
+* x and y pod offsets
+* pod directions
+* distance units/podtypes
+```java
+public LocalizerConstants setLocalizerConstants() { // Any LocalizerConstants
+        return new PinpointConstants()
+                //device name
+                .setName("pinpoint")
+                //distance units
+                .setDistanceUnit(DistanceUnit.INCH)
+                .setAngleUnit(AngleUnit.DEGREES)
+                //pod offsets
+                .setXOffset(0.0) // In distanceUnit
+                .setYOffset(0.0) // In distanceUnit
+                //pod directions
+                .setXPodDirection(GoBildaPinpointDriver.EncoderDirection.FORWARD)
+                .setYPodDirection(GoBildaPinpointDriver.EncoderDirection.FORWARD)
+                //pod types (for correct conversion to distance units)
+                .setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
+    }
+```
+
+## SparkFun OTOS Localizer
+OTOS constants contain:
+* device name
+* OTOS offsets
+* linear and heading scalars
+```java
+public LocalizerConstants setLocalizerConstants() { // Any LocalizerConstants
+    return new OTOSConstants() 
+    //device name
+    .setName("otos")
+    //device offset
+    .setOffset(new Pose(227, -16, 0, Distance.Units.MILLIMETERS, Angle.Units.DEGREES))
+    //scalars (for correcting measurement errors)
+    .setLinearScalar(1.05)
+    .setHeadingScalar(1.0);
+}
+```

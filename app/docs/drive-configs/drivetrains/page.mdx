@@ -1,0 +1,122 @@
+# Drivetrain Configs
+___
+
+## Mecanum Drive
+The mecanum drivetrain takes multiple arguments in the constants file: 
+* motor names
+* motor directions
+* maximum power
+```java
+@Override
+    public DrivetrainConstants setDrivetrainConstants() { // Any DrivetrainConstants
+        return new MecanumConstants()
+                // Set the names of the motors in your hardware map
+                .setFrontLeftMotorName("frontLeftMotor")
+                .setBackLeftMotorName("backLeftMotor")
+                .setFrontRightMotorName("frontRightMotor")
+                .setBackRightMotorName("backRightMotor")
+                //motor directions
+                .setFrontRightReversed(true)
+                .setBackRightReversed(true)
+                .setBrakeMode(true)
+                //robot centric or field centric.
+                .setRobotCentric(true)
+                //max power threshold
+                .setMaxPower(1.0);
+    }
+```
+
+## Tank Drive
+The tank drivetrain takes multiple arguments in the constants file: 
+* motor names
+* motor directions
+* maximum power
+
+```java
+public DrivetrainConstants setDrivetrainConstants() { // Any DrivetrainConstants
+        return new TankConstants()
+        //4 or 2 motor tank drive
+        .setFourMotorDrive(true)
+        //motor names
+        .setFrontLeftMotorName("leftFront")
+        .setBackLeftMotorName("leftRear")
+        .setFrontRightMotorName("rightFront")
+        .setBackRightMotorName("rightRear")
+        //motor directions
+        .setFrontRightReversed(true)
+        .setBackRightReversed(true)
+        .setBrakeMode(true)
+        //robot centric or field centric. (field centric not currently supported for tank drive)
+        .setRobotCentric(true)
+        //max power threshold
+        .setMaxPower(1.0);
+}
+```
+
+## Swerve Drive
+The swerve drivetrain takes multiple arguments in the constants file:
+* drive motor names
+* drive motor directions
+* turn servo names
+* analog encoder names
+* trackwidth and wheelbase measurements
+* maximum power
+It's structured slightly differently by declaring stuff per module.
+```java
+public DrivetrainConstants setDrivetrainConstants() { // Any DrivetrainConstants
+        return new SwerveConstants()
+        .setFrontLeftModuleConstants(
+                new SwerveModuleConstants()
+                        //motor name
+                        .setMotorName("frontLeftMotor")
+                        //servo name
+                        .setServoName("flServo")
+                        //encoder name
+                        .setEncoderName("flEncoder")
+                        //motor direction
+                        .setMotorReversed(false)
+        )
+        .setFrontRightModuleConstants(
+                new SwerveModuleConstants()
+                        //motor name
+                        .setMotorName("frontRightMotor")
+                        //servo name
+                        .setServoName("frServo")
+                        //encoder name
+                        .setEncoderName("frEncoder")
+                        //motor direction
+                        .setMotorReversed(true)
+        )
+        .setBackLeftModuleConstants(
+                new SwerveModuleConstants()
+                        //motor name
+                        .setMotorName("backLeftMotor")
+                        //servo name
+                        .setServoName("blServo")
+                        //encoder name
+                        .setEncoderName("blEncoder")
+                        //motor direction
+                        .setMotorReversed(false)
+        )
+        .setBackRightModuleConstants(
+                new SwerveModuleConstants()
+                        //motor name
+                        .setMotorName("backRightMotor")
+                        //servo name
+                        .setServoName("brServo")
+                        //encoder name
+                        .setEncoderName("brEncoder")
+                        //motor direction
+                        .setMotorReversed(true)
+        )
+        //max power threshold
+        .setMaxPower(1.0)
+        //trackwidth (supports custom units)
+        .setTrackWidth(Distance.fromMm(0))
+        //wheelbase (supports custom units)
+        .setWheelbase(Distance.fromMm(0))
+        //robot centric or field centric.
+        .setRobotCentric(true);
+}```
+
+

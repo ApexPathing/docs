@@ -52,7 +52,7 @@ export default function Home() {
 
             href="https://github.com/ApexPathing/"
             target="_blank"
-            className="px-8 py-3 rounded-full bg-brand-accent text-foreground font-semibold hover:bg-brand-accent-hover transition-all hover:scale-105 active:scale-95 border border-red-900/40"
+            className="px-8 py-3 rounded-full bg-brand-accent text-foreground font-semibold hover:bg-brand-accent-hover transition-all hover:scale-105 active:scale-95 border border-red-900"
           >
             GitHub
           </a>

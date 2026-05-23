@@ -50,12 +50,5 @@ export default function Home() {
       <div className="absolute inset-0 z-0">
         <BackgroundBeams />
       </div>
-
-      <footer className="w-full z-10 mt-auto pb-8 pt-4 border-t border-[#1a0000]/10 text-xs text-foreground/70">
-        <p>
-          © 2026 Apex Pathing. Apex Pathing is licensed under the GNU General Public License v3.0. The Apex Pathing name and logo are trademarks of Apex Pathing.
-        </p>
-      </footer>
-    </div>
   )
 }

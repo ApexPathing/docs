@@ -7,31 +7,22 @@ import { BackgroundBeams } from "@/components/background-beams";
 
 export default function Home() {
   return (
-    <div className="flex flex-col w-full items-center justify-center min-h-[calc(100vh-var(--nextra-navbar-height,4rem)-var(--nextra-banner-height,2.5rem)-3.8rem)] pt-12 px-6 text-center relative">
+    <div className="flex flex-col w-full items-center justify-center pt-16 px-6 text-center relative">
       <div className="max-w-3xl z-10 relative flex flex-col items-center">
         <Image
           src={logo_icon}
           alt="Apex Pathing Logo"
-          width={256}
-          height={256}
-          className="w-56 h-56 mb-4 mx-auto"
+          width={288}
+          height={288}
+          className="w-72 h-72 mb-4 mx-auto"
           priority
         />
 
-        <h1 className="text-5xl sm:text-6xl tracking-tight font-bold mb-4 text-white">
+        <h1 className="text-5xl sm:text-6xl tracking-tight font-bold mb-4 text-foreground">
           Apex Pathing
         </h1>
 
-        <p
-          className="text-lg sm:text-xl mb-10 leading-relaxed font-medium tracking-wide"
-          style={{
-            background: "linear-gradient(90deg, #cc0000, #ff6666, #8B0000, #ff3333, #cc0000)",
-            backgroundSize: "200% auto",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            animation: "shimmer 3s linear infinite",
-          }}
-        >
+        <p className="text-lg sm:text-xl mb-10 leading-relaxed font-medium tracking-wide text-primary">
           Path your way to the peaks!
         </p>
 

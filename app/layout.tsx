@@ -10,7 +10,7 @@ const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 export const metadata = {
   title: 'Apex Pathing',
-  description: 'Path to the peaks',
+  description: 'Path your way to the peaks!',
 }
 
 function PageBanner() {

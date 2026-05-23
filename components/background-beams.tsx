@@ -3,6 +3,7 @@ import React from "react";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 
+// Derived from Aceternity UI: https://ui.aceternity.com/components/background-beams
 export const BackgroundBeams = React.memo(
   ({ className }: { className?: string }) => {
     const paths = [
@@ -60,7 +61,7 @@ export const BackgroundBeams = React.memo(
     return (
       <div
         className={cn(
-          "absolute inset-0 flex h-full w-full items-center justify-center [mask-repeat:no-repeat] [mask-size:40px]",
+          "absolute inset-0 flex h-full w-full items-center justify-center mask-no-repeat mask-size:[40px]",
           className,
         )}
       >
@@ -106,16 +107,16 @@ export const BackgroundBeams = React.memo(
                   y2: ["0%", `${93 + Math.random() * 8}%`],
                 }}
                 transition={{
-                  duration: Math.random() * 10 + 10,
+                  duration: 7 + Math.random() * 7, 
                   ease: "easeInOut",
                   repeat: Infinity,
-                  delay: Math.random() * 10,
+                  delay: Math.random() * 2,
                 }}
               >
-                <stop stopColor="#5a0d12" stopOpacity="0"></stop>
-                <stop stopColor="#ad1b1b"></stop>
-                <stop offset="32.5%" stopColor="#df0000fb"></stop>
-                <stop offset="100%" stopColor="#ff0000" stopOpacity="0"></stop>
+                <stop className="text-transparent" stopColor="currentColor"></stop>
+                <stop offset="20%" className="text-brand-primary" stopColor="currentColor"></stop>
+                <stop offset="80%" className="text-brand-primary-hover" stopColor="currentColor"></stop>
+                <stop offset="100%" className="text-transparent" stopColor="currentColor"></stop>
               </motion.linearGradient>
             ))}
 

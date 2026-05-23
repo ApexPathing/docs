@@ -17,21 +17,21 @@
   --color-brand-glow: #000000;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
+.dark {
     --color-accent-text: #99a1af;
     --color-divider: #262626;
-    --color-background: #1f1f1f;
+    --color-background: #111111;
     --color-foreground: #fafafa;
     --color-brand-primary: #780000;
     --color-brand-primary-hover: #8F0000;
     --color-brand-accent: #292929;
     --color-brand-accent-hover: #333333;
     --color-brand-glow: #000000;
-  }
 }
 
 body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -43,7 +43,6 @@ body {
   color: var(--foreground);
 }
 
-/* page fades + slides in on load */
 main {
   animation: pageSlideIn 0.4s cubic-bezier(0.25, 0.1, 0.25, 1) both;
 }
@@ -60,7 +59,6 @@ main {
   }
 }
 
-/* sidebar container fades in */
 aside nav {
   animation: sidebarIn 0.5s ease 0.15s both;
 }
@@ -75,7 +73,6 @@ aside nav {
   }
 }
 
-/* search bar focus */
 input[type="search"], [class*="search"] input {
   transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
 }
@@ -84,7 +81,6 @@ input[type="search"]:focus, [class*="search"] input:focus {
   outline: none;
 }
 
-/* Custom small branded scrollbar */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {

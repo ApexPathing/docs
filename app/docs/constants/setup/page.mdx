@@ -1,13 +1,13 @@
 import { ScrollBehavior } from 'next/dist/client/components/router-reducer/router-reducer-types'
 import { Steps, Table, Callout } from 'nextra/components'
 
-# Apex Pathing Constants Setup
+# Constants Setup
 ---
 
 Clone the project on github and navigate to the constants file. The constants file holds three main types of constants:
-* **Follower Constants:** Define how your robot follows a path
 * **Drivetrain Constants:** Constants specifically related to your drivetrain, different for each type
-* **Localizer Constants:** Constants relating to your odometry pods, encoder offsets, and more...type
+* **Localizer Constants:** Constants relating to your odometry pods, encoder offsets, and more
+* **Follower Constants:** Define how your robot follows a path
 
 <Steps>
 ### Open `Constants.java`
@@ -16,11 +16,11 @@ In Android Studio, double press the shift key to open the search prompt and sear
 constants will open up, this is the only file you will need to edit.
 
 ### Drivetrain Constants
-Head over to the [Drivetrain Configuration](../drivetrain-configuration/page.mdx) page which will guide you through the 
+Head over to the [Drivetrain Configuration](../constants/drivetrains/) page which will guide you through the 
 process of creating the `DrivetrainConstants` for your robot. Once you've done that, come back here.
  
 ### Localizer Constants
-Similarly, the [Localizer Configuration](../localizer-configuration/page.mdx) page which will guide you through setting
+Similarly, the [Localizer Configuration](../constants/localizers/) page which will guide you through setting
 up a `LocalizerConstants` class for your robot. This should be done after the drivetrain constants are set up. Once
 you've done that, come back here.
 
@@ -81,10 +81,21 @@ You should be able to drive the robot like a normal TeleOp OpMode.
 </Table>
 
 <Callout type="info">
-    If the above checks do not pass, your robot will not behave correctly. Currently, there is no troubleshooting guide
-    for this step, so you should ask for help in the Apex Pathing Discord server.
+    If the above checks do not pass, your robot will not behave correctly. First check the troubleshooting section at
+    the bottom of this page, and if you still can't figure out the issue, reach out in the Discord and we will help you 
+    get it sorted out!
 </Callout>
 </Steps>
+
+
+## Troubleshooting
+If your robot isn't behaving as expected, here are some common issues to check for:
+- Controls are backwards or inverted
+    - Make sure your motor reversals are correct in the constants file
+- X or Y is is going the wrong way
+    - Reverse the corresponding odometry direction in the constants file
+- X and Y are swapped
+    - Reverse the X and Y odometry directions in the constants file
 
 
 ## Tuning

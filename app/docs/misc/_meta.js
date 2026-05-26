@@ -1,4 +1,5 @@
 export default {
     "pdfl" : "PDFL",
-    "pid" : "PID"
+    "pid" : "PID",
+    "pds" : "PDS",
 }

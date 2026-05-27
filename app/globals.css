@@ -9,9 +9,9 @@
   --color-divider: #262626;
   --color-background: #fafafa;
   --color-foreground: #000000;
-  --primary: #780000;
-  --color-brand-primary: #780000;
-  --color-brand-primary-hover: #8F0000;
+  --primary: #b91c1c;
+  --color-brand-primary: #b91c1c;
+  --color-brand-primary-hover: #991b1b;
   --color-brand-accent: #292929;
   --color-brand-accent-hover: #333333;
   --color-brand-glow: #000000;
@@ -19,7 +19,7 @@
 
 @theme inline {
   --animate-gradient: gradient 8s linear infinite;
- 
+
   @keyframes gradient {
     to {
       background-position: var(--bg-size, 300%) 0;
@@ -32,8 +32,8 @@
     --color-divider: #262626;
     --color-background: #111111;
     --color-foreground: #fafafa;
-    --color-brand-primary: #780000;
-    --color-brand-primary-hover: #8F0000;
+    --color-brand-primary: #dc2626;
+    --color-brand-primary-hover: #ef4444;
     --color-brand-accent: #292929;
     --color-brand-accent-hover: #333333;
     --color-brand-glow: #000000;

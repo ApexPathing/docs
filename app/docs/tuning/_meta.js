@@ -5,4 +5,5 @@ export default {
     "axial-tuner": "Axial Tuner",
     "teleop-test": "Teleop Test",
     "swerve-offsets": "Swerve Offsets",
+    "bspline-tuner": "BSpline Tuner"
 }

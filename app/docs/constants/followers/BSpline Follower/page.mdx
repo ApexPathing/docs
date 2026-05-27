@@ -1,0 +1,28 @@
+# Follower Configs
+___
+
+## BSpline Follower
+The BSpline follower takes multiple arguments in the constants file:
+* Translation and heading coefficients (PDS)
+* Velocity feedforward (FF)
+* Heading tolerance
+* Distance (translational) tolerance
+* T-parameter tolerance (for spline completion)
+
+### Tuning your follower constants
+In order to obtain the values of your follower constants, you must run the following tuner:
+* [BSpline Tester](/docs/tuning/bspline-tuner)
+
+Refer to the Tuning section of the documentation to know more about how to run these tuners.
+
+```java
+    @Override
+    public FollowerConstants setFollowerConstants() { // Any FollowerConstants
+        return new BSplineFollowerConstants()
+                .setTranslationCoeffs(new PDSController.PDSCoefficients(0.1, 0.0, 0.0, 0.0))
+                .setHeadingCoeffs(new PDSController.PDSCoefficients(0.4, 0.0, 0.0, 0.0))
+                .setVelocityFF(0.01)
+                .setHeadingTolerance(Math.toRadians(1.0))
+                .setDistanceTolerance(0.5)
+                .setTTolerance(0.95);
+    }

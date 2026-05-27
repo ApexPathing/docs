@@ -17,6 +17,15 @@
   --color-brand-glow: #000000;
 }
 
+@theme inline {
+  --animate-gradient: gradient 8s linear infinite;
+ 
+  @keyframes gradient {
+    to {
+      background-position: var(--bg-size, 300%) 0;
+    }
+  }
+}
 .dark {
     --color-accent-text: #99a1af;
     --color-divider: #262626;

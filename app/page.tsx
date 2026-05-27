@@ -4,6 +4,7 @@ import './globals.css'
 import Image from 'next/image'
 import logo_icon from '../public/logo_icon.svg'
 import { BackgroundBeams } from "@/components/background-beams";
+import { AnimatedGradientText } from "@/components/animated-gradient-text"
 
 export default function Home() {
   return (
@@ -12,7 +13,9 @@ export default function Home() {
       <div className="max-w-3xl mt-16 z-10 relative">
         <Image src={logo_icon} alt="Apex Pathing Logo" width={256} height={256} className="w-64 h-64 mb-6 mx-auto" />
         <h1 className="text-4xl sm:text-5xl tracking-tight font-bold mb-5">
-          Apex Pathing
+          <AnimatedGradientText>
+            Apex Pathing
+          </AnimatedGradientText>
         </h1>
         <p className="text-xl text-accent-text mb-9 leading-relaxed">
           Path your way to the peaks
@@ -27,6 +30,7 @@ export default function Home() {
           </a>
         </div>
       </div>
+  
       <BackgroundBeams />
     </div>
   )

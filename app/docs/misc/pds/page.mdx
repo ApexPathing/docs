@@ -3,7 +3,8 @@
 
 ## What are PDS controllers good for?
 A PDS controller is a precise alternative to a traditional PID controller. This controller removes the I term which can cause overshoots when it builds up.
-It's extremely advantageous for pathing applications, as the S term helps to break through static friction, thus increasing accuracy and precision.
+It's extremely advantageous for pathing applications, as the S term helps to break through static friction, thus increasing accuracy and precision. PDS controllers
+play a huge role in Apex, helping us achieve exemplarily precise pathing.
 
 ## Overview 
 This controller contains 3 terms:
@@ -23,7 +24,3 @@ generally when tuning it, you want your robot or mechanism to reach the target p
 
 The D term is generally supposed to be a very small number and it's meant to counteract the oscilation that the P term causes.
 However, it can also cause extreme oscilation or a slow response time if it's too large. The D term when tuned just right should help your robot to "snap right to the target position"
-
-
-## What role do PDS controllers play in Apex Pathing?
-

@@ -1,0 +1,59 @@
+## BSpline Theory
+
+
+### Cubic Functions
+At the core, B-Splines are cubic functions, a function with a degree of 3. 
+For example, a simple linear equation: $f(x)=\ mx+b$ has a degree of 1, 
+because the highest power in the equation, is 1. 
+A quadratic: $f(x)=\ Ax^2+Bx+C$ has a degree of 2. 
+When increasing the degree,the base equation just gets a new coefficient and degree.
+For example, a quintic equation would be $f(x) =\ Ax^5 + Bx^4 + Cx^3 + Dx^2 + Ex + F$
+Lets substitute $x$ as $t$, the time it takes between the beginning and end of a curve, usually
+expressed as $t \in [0,1]$ which basically means that all curves happen on a range from 0 to 1.
+This means that any t value that is plugged into the equation, for example $t = 0.6$, will give 
+you the vector, or coordinate that is exactly $(t*100)$%  along the line.
+With this in mind, let's write the cubic function equation:
+
+$f(t) = At^3 + Bt^2 + Ct +D$
+
+
+### 2D curves
+
+When given a function $f(t)$, it is important to note that a function cannot have multiple outputs
+for the same input. For example, if $t =0.3$, then $f(t)$, or $y$ cannot equal multiple values,
+otherwise, it wouldn't be considered a function. We can get around this by essentially assigning $t$ values.
+This is possible because even though $t$ is a "substitution" to $x$, it does not directly
+correspond to the x axis. Therefore, a vector/coordinate at $(x:5,y:5)$ could have a $t$ value of $0.2$.
+Then, if you create another vector at $(x:5,y:10)$, and assign it at a $t$ value of $0.4$,
+you could create a curve between the two. But wait! If we create a function that passes through both
+vectors, we will run into the same issue! This is where the concept of 2D curves comes in handy.
+Imagine that each $x$ and $y$ value of a function, relates to another function. For example,
+given a value $t$, you can model 2 functions, one for $x$ and one for $y$. This means that the
+function doesnt pass through 2 points on the same $x$ value, but rather passes through one point on the
+$x$ function, and 2 points on the $y$ function. This could be modeled as $(x:f(t),y:g(t))$ where
+$f(t)$ is the x function, and $g(t)$ is the y function. This is probably still really confusing,
+so lets take it a little deeper. Image a coordinate plane where the $x$ axis is represented as
+$t$, and the $y$ axis is represented by $x$, this is the $x$ function's "space". Imagine the points
+specified earlier, $(5,5)$ at $t=0.2$ and $(5,10)$ at $t=0.4$. In the $x$ function's "space", the
+coordinates could be written as $(0.2,5)$ and $(0.4,5)$, which follow the scheme $(t,x)$. Similarly,
+the coordinates on the $y$ function's "space" would be $(0.2,5)$ and $(0.4,10)$. Each function
+can be solvable via interpolation(more on that later), because now,there is only one outputs
+for each input. Then, just plug the functions back into $(f(t),g(t))$. There is a very good video
+on this [here](https://www.youtube.com/watch?v=JwN43QAlF50&t=109s). There are some other topics in 
+that video that we will cover a little later.
+
+### B-Spline Features
+
+Now that we have talked about the basics of pathing in FTC, and how it relates to B-Splines,
+lets talk about what features the B-Spline has. 
+
+* B-Splines are $C_2$ continuous, meaning that their curves are connected, their first derivatives
+are connected, and the second derivatives, or the derivatives of the derivatives are connected. We wont
+go too much into detail into derivatives here, but this essentially means that our paths are smooth
+and dont result in sudden jerks. It also allows for efficient computing.
+* B-Splines are $G_1$ continuous, this means that the curvature is continuous. This essentially
+means that the robot wont experience any acceleration jumps while traveling the path.
+* B-Splines do not interpolate **ANY** control points. Interpolation was brought up earlier. Essentially,
+it means that the function passes through the interpolated points. This means that B-Splines do not
+pass through any of the specified control points. This is similar to Bezier curves, they interpolate the endpoints.
+We can get around this, and are able to control the endpoints using some clever math that will be talked about later.

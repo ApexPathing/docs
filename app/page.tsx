@@ -128,11 +128,11 @@ export default function Home() {
       <div className="relative flex flex-col w-full items-center min-h-[calc(100vh-var(--nextra-navbar-height,4rem))] py-12 justify-center">
 
         <div className="max-w-3xl z-10 relative px-6 mt-8 sm:mt-0 text-center">
-          <Image src={logo_icon} alt="Apex Pathing Logo" width={256} height={256} className="w-40 h-40 sm:w-64 sm:h-64 mb-4 sm:mb-6 mx-auto" />
-          <h1 className="text-4xl sm:text-5xl tracking-tight font-bold mb-3 sm:mb-5">
+          <Image src={logo_icon} alt="Apex Pathing Logo" width={256} height={256} className="w-64 h-64 mb-4 sm:mb-6 mx-auto" />
+          <h1 className="text-5xl tracking-tight font-bold mb-3 sm:mb-5">
             Apex Pathing
           </h1>
-          <p className="text-lg sm:text-xl text-accent-text mb-6 sm:mb-9 leading-relaxed">
+          <p className="text-xl text-accent-text mb-6 sm:mb-9 leading-relaxed">
             Path your way to the peaks
           </p>
 
@@ -146,7 +146,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className={`absolute bottom-4 sm:bottom-16 flex flex-col items-center gap-1 text-accent-text text-sm transition-opacity duration-300 ${isScrollIndicatorVisible ? 'opacity-100' : 'opacity-0'}`}>
+        <div className={`absolute bottom-5 sm:bottom-16 flex flex-col items-center gap-1 text-accent-text text-sm transition-opacity duration-300 ${isScrollIndicatorVisible ? 'opacity-100' : 'opacity-0'}`}>
           <ArrowDown className="animate-bounce" />
           View More
         </div>

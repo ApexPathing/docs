@@ -5,17 +5,18 @@ import 'nextra-theme-docs/style.css'
 import './globals.css'
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
+import type { Metadata } from 'next'
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
-export const metadata = {
+export const metadata : Metadata = {
   title: 'Apex Pathing',
-  description: 'Path your way to the peaks!',
+  description: 'Path your way to the peaks',
 }
 
 function PageBanner() {
   return (
-    <Banner storageKey="some-key">
+    <Banner storageKey="banner-1"> {/* NOTE: when the banner is updated, change the storageKey so it appears for all users */}
       Apex Pathing is currently not released! Join the
       &nbsp;<a href="https://discord.gg/qpP4CXaHDg"target="_blank" rel="noopener noreferrer"><u>Discord Server</u></a>&nbsp;
       to help or keep up with development.
@@ -40,7 +41,7 @@ function PageNavbar() {
 
 function PageFooter() {
   return (
-    <footer key="footer" className='mt-auto border-t py-5 border-divider text-center text-sm text-accent-text'>
+    <footer key="footer" className='mt-auto p-5 text-center text-sm text-accent-text'>
       &copy; 2026 Apex Pathing. Apex Pathing is licensed under the&nbsp;
       <a href="https://www.gnu.org/licenses/gpl-3.0.en.html" className="hover:underline hover:text-brand-primary-hover">GNU General Public License v3.0</a>
       . The Apex Pathing name and logo are trademarks of Apex Pathing.
@@ -51,7 +52,7 @@ function PageFooter() {
 export default async function RootLayout({ children } :{ children: React.ReactNode }) {
   return (
     <html lang="en" dir="ltr" suppressHydrationWarning className={cn("font-sans", geist.variable)}>
-      <Head color={{ hue: 0, saturation: 100, lightness: 45}} />
+      <Head color={{ hue: 0, saturation: 100, lightness: 50 }} />
       <body>
        <Layout
           banner={PageBanner()}
@@ -63,6 +64,8 @@ export default async function RootLayout({ children } :{ children: React.ReactNo
           editLink={null}
           feedback={{ content: null }}
           copyPageButton={false}
+          darkMode={false}
+          nextThemes={{ defaultTheme: 'dark', forcedTheme: 'dark' }}
         >
           {children}
         </Layout>

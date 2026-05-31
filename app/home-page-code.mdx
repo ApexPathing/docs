@@ -1,0 +1,20 @@
+```java
+Path tangentOptimalPath = new PathBuilder()
+        .addControlPoints(
+                lastPath.getEndPose(),
+                pose.of(120, 20),
+                pose.arcPoseOf(120, 0, 10),
+                pose.of(100, -20, 0)
+        )
+        .interpolateWith(InterpolationStyle.TANGENT_OPTIMAL)
+        .addDistanceCallback(0.8, this::dropElement)
+        .build();
+
+Turn callbackTurn = new TurnBuilder(tangentOptimalPath.getEndPose())
+        .turnTo(Angle.fromDeg(0))
+        .addAngularCallback(Angle.fromDeg(315), this::deployOuttake)
+        .build();
+
+Follower follower = constants.build();
+follower.follow(tangentOptimalPath);
+```

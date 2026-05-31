@@ -16,7 +16,7 @@ export const metadata : Metadata = {
 
 function PageBanner() {
   return (
-    <Banner storageKey="banner-1"> {/* NOTE: when the banner is updated, change the storageKey so it appears for all users */}
+    <Banner storageKey="banner-2"> {/* NOTE: when the banner is updated, change the storageKey so it appears for all users */}
       Apex Pathing is currently not released! Join the
       &nbsp;<a href="https://discord.gg/qpP4CXaHDg"target="_blank" rel="noopener noreferrer"><u>Discord Server</u></a>&nbsp;
       to help or keep up with development.

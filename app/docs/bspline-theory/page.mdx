@@ -53,7 +53,7 @@ affect a small part of the curve, and not the whole thing. For example, adjustin
 near one of the spline's endpoints will not change anything near the other endpoint.
 
 
-## The Math Behind a BSpline
+## The Math
 
 How is a BSpline actually formed? To acquire an in-depth understanding of the formation of a BSpline,
 the matrix form of a function must be understood first.
@@ -102,32 +102,34 @@ After obtaining the matrix form, we can utilize matrix multiplication to transfo
 matrices into a polynomial. Let's look at the polynomial coefficient form. This is
 where the matrix is expressed in terms of $t$, using the $P$ matrix as coefficients.
 
-First, the $P$ matrix is expressed like this:
+
+When multiplying the $C$ and $P$ matrices, we can just multiply each element in the $P$ matrix 
+by their corresponding column in the $C$ matrix. For example. The $P_0$, which is the first element
+in the $P$ matrix, is multiplied by each element in the first column. You repeat this for each
+element and row in the $P$ and $C$ matrices respectively. The outcome of our operation is:
 
 $\begin{bmatrix}
-    P_0 & P_1 & P_2 & P_3 
+   1*(P_0) & 4*(P_1) & 1*(P_2) & 0*(P_3) \\
+   -3*(P_0) & 0*(P_1) & 3*(P_2)  & 0*(P_3) \\
+   3*(P_0) & -6*(P_1) & 3*(P_2) & 0*(P_3) \\
+   -1*(P_0) & 3*(P_1) & -3*(P_2) & 1*(P_3) \\
 \end{bmatrix}$
 
-Next, each of the $P$ values is multiplied by its respective point in each row of the $C$ matrix:
+
+
+Finally, each element in the $T$ matrix is multiplied by the the rows of the $C$ matrix, instead
+of the columns. This is because $T$ is defined as a $1x4$ matrix, so the elements are multiplied
+by the rows instead of columns, as opposed to the $P$ matrix wich was $4x1$. 
 
 $\begin{bmatrix}
-   1*P_0 & 4*P_1 & 1*P_2 & 0*P_3 \\
-   -3*P_0 & 0*P_1 & 3*P_2  & 0*P_3 \\
-   3*P_0 & -6*P_1 & 3*P_2 & 0*P_3 \\
-   -1*P_0 & 3*P_1 & -3*P_2 & 1*P_3 \\
+   (1)*1*(P_0) & (1)*4*(P_1) & (1)*1*(P_2) & (1)*0*(P_3) \\
+   (t)*-3*(P_0) & (t)*0*(P_1) & (t*3)*P_2  & (t)*0*(P_3) \\
+   (t^2)*3*(P_0) & (t^2)*-6*(P_1) & (t^2)*3*(P_2) & (t)^2*0*(P_3) \\
+   (t^3)*-1*(P_0) & (t^3)*3*(P_1) & (t^3)*-3*(P_2) & (t)^3*1*(P_3) \\
 \end{bmatrix}$
 
-Then, the $t$ matrix is written like this:
-
-$\begin{bmatrix}
-    1\\
-    t\\
-    t^2 \\
-    t^3 \\
-\end{bmatrix}$
-
-Finally, the inside values are multiplied by the corresponding rows, and the inside of the matrix
-is added together, thus resulting in the final polynomial coefficient form:
+When multiplying matrices,the inside values of the resulting matrix are added together.
+ The resulting equation looks like this:
 
 $f(t)=$
 

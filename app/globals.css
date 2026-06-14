@@ -38,7 +38,6 @@
 }
 
 body {
-  color: var(--color-foreground);
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui;
   scroll-behavior: smooth;
 
@@ -106,5 +105,5 @@ input[type="search"]:focus, [class*="search"] input:focus {
 ::-webkit-scrollbar-thumb:hover { background: var(--color-brand-primary-hover) }
 
 h1, h2 {
-  color: var(--color-brand-primary-hover) !important;
+  color: #ebe7e7ef !important;
 }

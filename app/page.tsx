@@ -137,7 +137,7 @@ export default function Home() {
           </p>
 
           <div className="flex flex-wrap justify-center gap-4 mb-16">
-            <a href="/docs/about" className="px-8 py-3 rounded-full bg-brand-primary text-foreground font-medium hover:bg-brand-primary-hover transition-all">
+            <a href="/docs/getting-started" className="px-8 py-3 rounded-full bg-brand-primary text-foreground font-medium hover:bg-brand-primary-hover transition-all">
               Get Started
             </a>
             <a href="https://github.com/ApexPathing/" target="_blank" className="px-8 py-3 rounded-full transition-all bg-brand-accent hover:bg-brand-accent-hover text-foreground">
@@ -154,7 +154,7 @@ export default function Home() {
 
       <div className="relative z-20 flex flex-col w-full max-w-6xl px-6 pb-10">
         <div className="w-full p-6 mb-8 border border-divider rounded-xl bg-neutral-900 shadow-sm">
-          <h3 className="text-2xl text-brand-primary-hover font-bold mb-4">Usage Example</h3>
+          <h3 className="text-2xl text-brand-primary-hover font-bold mb-4">Path Example</h3>
           <div className="w-full rounded-lg overflow-hidden border border-divider bg-background">
             <HomePageCode />
           </div>

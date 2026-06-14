@@ -5,6 +5,7 @@ export default {
         type: "separator",
         title: "Installation & Tuning"
     },
+    "getting-started": "Getting Started",
     "installation": "Installation",
     "constants": "Constants",
     "tuning": "Tuning Guides" ,

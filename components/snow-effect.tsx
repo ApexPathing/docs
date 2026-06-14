@@ -14,7 +14,7 @@ export default function SnowEffect() {
         zIndex: 0,
         pointerEvents: "none",
       }}
-      snowflakeCount={100}
+      snowflakeCount={130}
       color="#ffffff"
       speed={[1.0, 3.2]}
       wind={[0.5, 2.5]}

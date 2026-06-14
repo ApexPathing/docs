@@ -38,10 +38,17 @@
 }
 
 body {
-  background-color: var(--color-background);
   color: var(--color-foreground);
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui;
   scroll-behavior: smooth;
+
+   background-image: linear-gradient(
+    135deg, 
+    var(--color-background) 0%, 
+    #1a0505 50%,
+    var(--color-background) 80%
+  );
+  background-attachment: fixed;
 }
 
 ::selection {

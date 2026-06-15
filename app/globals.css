@@ -38,7 +38,6 @@
 }
 
 body {
-  color: var(--color-foreground);
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui;
   scroll-behavior: smooth;
 
@@ -106,5 +105,27 @@ input[type="search"]:focus, [class*="search"] input:focus {
 ::-webkit-scrollbar-thumb:hover { background: var(--color-brand-primary-hover) }
 
 h1, h2 {
-  color: var(--color-brand-primary-hover) !important;
+  color: #ebe7e7ef !important;
+}
+
+.nextra-sidebar-footer {
+  background: transparent !important;
+  border-top: none !important;
+}
+
+.nextra-sidebar-footer > button,
+.nextra-sidebar-footer button {
+  mix-blend-mode: screen !important;
+  opacity: 1 !important;
+  filter: blur(0.3px) !important;
+  background-color: transparent !important;
+  
+  animation: none !important; 
+  transition: opacity 0.3s ease, filter 0.3s ease !important;
+}
+
+.nextra-sidebar-footer > button:hover,
+.nextra-sidebar-footer button:hover {
+  opacity: 0.8 !important;
+  filter: blur(0px) !important;
 }

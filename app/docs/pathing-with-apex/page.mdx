@@ -1,0 +1,95 @@
+# Pathing With Apex
+---
+This section covers how to build robust autonomous routines with extremely clean architectural structure with Apex Pathing.
+Apex is extremely easy to integrate into FSMs, command libraries and action systems, enabling you to choose your route to Path your way to the Peaks!
+
+### FSM Integration
+There are multiple structurally clean and efficient implementations of Apex in FSMs. The majority of these utilize the hasStarted() and hasEnded()
+helper methods in `FollowerMovement`:
+
+```java
+     // Booleans to track progression along a path
+     private boolean started = false;
+     private boolean ended = false;
+    public boolean hasStarted() {
+        return started;
+    }
+
+    public boolean hasEnded() {
+        return ended;
+    }
+```
+These helper methods enable easy sequencing and path chaining, allowing extremely sequencing of paths.
+Below is an example of how to implement these helper methods:
+
+```java
+            while (opModeIsActive && !isStopRequested()) {
+                switch (currentPath) {
+                    case PATH_1:
+                        if (!path.path1.hasStarted()) follower.follow(path.path1);
+                        if (path.path1.hasEnded()) currentState = Path.PATH_2;
+                        break;
+
+                    case PATH_2:
+                        if (!path.path2.hasStarted()) follower.follow(path.path2);
+                        if (path.path2.hasEnded()) currentState = Path.COMPLETE;
+                        break;
+
+                    case COMPLETE:
+                        follower.stop();
+                        telemetry.addLine("Auto Complete!");
+                        break;
+                }
+            }
+```
+
+Alternatively, you may use something along these lines, eliminating the need for a Java enum and using a `phase` integer:
+
+```java
+            while (opModeIsActive && !isStopRequested()) {
+                switch (phase) {
+                  case 1:
+                    follower.follow(path1);
+                    phase = 2;
+                    break;
+                  case 2:
+                    if (path1.hasEnded()) {
+                      follower.follow(path2);
+                    }
+                    break;
+                  case 3:
+                    follower.stop();
+                    telemetry.addLine("Auto Complete!");
+                    break;
+                }
+            }
+```
+
+### Command System Integration
+
+Integrating Apex into a Command System like `ftclib` is easy; just use this `pathCommand` helper method:
+
+```java
+    private Command pathCommand(FollowerMovement path) {
+        return new SequentialCommandGroup(
+            new InstantCommand(() -> {
+                if (!path.hasStarted()) {
+                    follower.follow(path);
+                }
+            }),
+            new WaitUntilCommand(() -> path.hasEnded()),
+            new InstantCommand(() -> follower.stop())
+        );
+    }
+```
+
+Then, call it like so:
+
+```java
+    SequentialCommandGroup autoPath = new SequentialCommandGroup(
+      pathCommand(path.path1).alongWith(intake()),
+      pathCommand(path.path2).andThen(shoot())
+      //The rest of your paths here
+    );
+```
+

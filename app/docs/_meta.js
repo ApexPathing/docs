@@ -9,6 +9,7 @@ export default {
     "installation": "Installation",
     "constants": "Constants",
     "tuning": "Tuning Guides" ,
+    "pathing-with-apex": "Pathing With Apex",
 
     "concepts-section": {
         type: "separator",

@@ -1,7 +1,7 @@
 # BSpline Theory
 ---
 
-## Cubic Functions
+### Cubic Functions
 
 * At its core, BSplines are cubic functions, a function with a degree of 3.
 For example, a simple linear equation: $f(x)= mx+b$ has a degree of 1, 
@@ -16,7 +16,7 @@ you the vector, or coordinate that is exactly $(t*100)$%  along the line.
 * With this in mind, let's write the cubic function equation: $f(t) = At^3 + Bt^2 + Ct +D$
 
 
-## 2D curves
+### 2D curves
 
 * For a given function $f(t)$, it is important to note that this function cannot have multiple outputs for the same input.
 If it weren't for this, it wouldn't be considered a function.
@@ -37,7 +37,7 @@ because now, there is only one output for each input. Then, just plug the functi
 * **Interpolation** is the process of inputting control points and generating a curve that  passes through those points.
 * To gain a more in-depth understanding of 2D splines, we recommend watching this.[YouTube video](https://www.youtube.com/watch?v=JwN43QAlF50&t=109s).
 
-## BSpline Features
+### BSpline Features
 
 BSplines possess multiple advantageous properties making them a perfect fit for FTC pathing!
 
@@ -55,7 +55,7 @@ affect a small part of the curve, and not the whole thing. For example, adjustin
 near one of the spline's endpoints will not change anything near the other endpoint.
 
 
-## The Math
+### The Math
 
 How is a BSpline actually formed? To acquire an in-depth understanding of the formation of a BSpline,
 the matrix form of a function must be understood first.
@@ -152,7 +152,7 @@ $\tfrac{1}{6}t^3(-P_0 + 3P_1 + -3P_2 + P_3)$
 Because BSplines take the entire position of the control points and not just x, we can conclude that BSplines are 2D. However,
 you do not need to assign t values for the spline. This happens automatically.
 
-## Ghost points
+### Ghost points
 
 * Ghost points are the final piece of the BSpline puzzle, enabling the interpolation of end points on a spline, something which wouldn't have ever been possible otherwise
 * This is done by reflection of both the second control point and the second to last control point around their respective endpoints.

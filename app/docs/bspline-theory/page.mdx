@@ -154,21 +154,15 @@ you do not need to assign t values for the spline. This happens automatically.
 
 ## Ghost points
 
-ghost points allow us to interpolate end points on a spline that otherwise wouldn't be able to;
-This is done by reflecting the second control point, and the second to last control point around its respective endpoint. For example, Let's say we have 2 points. One at $(x:0,y:0)$ which is the "endpoint"
-and one at $(x:4,y:4)$ which is our "second control point". If we use the process described above, we could find that the "ghost point"
-is at $(x:-4,y:-4)$. By repeating this process for both endpoints, and plugging it into our matrix form, we are able to control where the curve 
-starts and ends with the actual generated control points, with the ghost points doing the heavy lifting in the back.
-The formula for this can be expressed as 
-
-$2P_0 - P_1$
-
-or if you are writing it as a coordinate,
-
-$(x:  2x_0 -x_1,y:2y_0  - y_1)$
-
-where the numbers with subscripts of $0$ are the "real endpoints" and the numbers with subscripts of $1$ are the second, 
-or second to last points. Because of this, you are able to easily construct straight lines with with BSplines, without having to mirror
-each control point yourself. If you plug in 2 points into into the ghost point formula, with the first point being the second to last point,
-and the second point being, well, the second point, the ghost point formula can generate 2 extra points, which is the minimum required for a
-BSpline. If you create a BSpline that uses 2 specified points, and their ghost points, the resulting b spline wil **always** be a straight line.
+* Ghost points are the final piece of the BSpline puzzle, enabling the interpolation of end points on a spline, something which wouldn't have ever been possible otherwise
+* This is done by reflection of both the second control point and the second to last control point around their respective endpoints.
+* Say we have 2 points: One at $(x:0,y:0)$ which is the `endpoint` and one at $(x:4,y:4)$ which is our `second control point`
+* By utilizing the aforementioned process, we can calculate the `ghost point` to be at $(x:-4,y:-4)$
+* By repeating this process for both endpoints and plugging it into our matrix form, we have the ability to control where the curve starts
+and ends with the ghost points doing all the heavy lifting
+* The formula for this can be expressed as $2P_0 - P_1$, or if you're writing it as a coordinate, $(x:  2x_0 -x_1,y:2y_0  - y_1)$
+where the numbers with subscripts of $0$ are the real endpoints and the numbers with subscripts of $1$ are the second/second to last endpoints
+* As a result, we can easily construct straight lines with BSplines while eliminating the need to mirror each control point manually!
+* If you plug in 2 points into the ghost point formula, with the first point being the second to last point and the second being the second point,
+the ghost point formula can successfully generate 2 extra points, which is the minimum required for a BSpline.
+* If you create a BSpline that uses 2 specified points, and their ghost points, the resultant BSpline will **always** be a perfect straight line.

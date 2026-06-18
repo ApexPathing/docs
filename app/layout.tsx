@@ -39,6 +39,7 @@ function PageNavbar() {
   )
 }
 
+
 function PageFooter() {
   return (
     <footer key="footer" className='mt-auto p-5 text-center text-sm text-accent-text'>

@@ -1,8 +1,8 @@
 # Follower Configs
 ___
 
-## BSpline Follower
-The BSpline follower takes multiple arguments in the constants file:
+## Follower
+The follower takes multiple arguments in the constants file:
 * Translation and heading coefficients (PDS)
 * Velocity feedforward (FF)
 * Heading tolerance
@@ -11,7 +11,7 @@ The BSpline follower takes multiple arguments in the constants file:
 
 ### Tuning your follower constants
 In order to obtain the values of your follower constants, you must run the following tuner:
-* [BSpline Tester](/docs/tuning/bspline-tuner)
+* [Follower Tuner](/docs/tuning/follower-tuner)
 
 Refer to the Tuning section of the documentation to know more about how to run these tuners.
 
@@ -26,3 +26,4 @@ Refer to the Tuning section of the documentation to know more about how to run t
                 .setDistanceTolerance(0.5)
                 .setTTolerance(0.95);
     }
+```

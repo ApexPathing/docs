@@ -1,24 +1,65 @@
+import { Tabs, Steps } from 'nextra/components'
+
 # Localizer Configs
 ___
 
-## Pinpoint Localizer
-Pinpoint constants contain:
-* Device name
-* X and Y pod offsets
-* Pod directions
-* Distance units/pod types
-```java
-@Override
-    public BaseLocalizerConfig<Pinpoint.Config> setLocalizerConstants() { // Any LocalizerConstants
-        return new Pinpoint.Config()
-                //device name   
-                .setName("pinpoint")
-                //pod offsets
-                .setOffsets(0, 0, DistUnit.IN)
-                //encoder directions
-                .setEncoderDirections(Pinpoint.EncoderDirection.FORWARD, Pinpoint.EncoderDirection.FORWARD)
-                //encoder types
-                .setEncoderResolution(Pinpoint.GoBildaPods.goBILDA_4_BAR_POD);
-    }
-```
+<Tabs items={['goBilda Pinpoint', 'SparkFun OTOS', 'Three Wheel Odometry', 'Two Wheel Odometry', 'Drive Encoder']}>
+  <Tabs.Tab>
+    Pinpoint constants configure the hardware name, physical pod offsets, wheel directions, and encoder ticks.
+    <Steps>
+    ### Step 1 -- Name
+    Call `.setName()` in order to set the name of the Pinpoint device on your control hub.
 
+    ### Step 2 -- Offsets
+    Call `.setOffsets()` in order to set the offsets of the PInpoint dead wheels. Do so according to the diagram below. 
+
+    ### Step 3 -- Direction
+    Call `.setEncoderDirections()` in order to flip the directions of the dead wheels. Run the `TeleOP Test` to make sure that moving the bot forward increases the `y` of your position and moving the bot to the right increases the `x` of your position.
+
+    ### Step 4 -- Resolution
+    Set the type of odometry you are using. For 4-Bar-Pods, it'll be `Pinpoint.GoBildaPods.goBILDA_4_BAR_POD` and for Swing-Arm `Pinpoint.GoBildaPods.goBILDA_SWINGARM_POD`. If you're using a custom odometry solution, input a double in ticks per mm representing the resolution of the odometry pods. 
+    </Steps>
+    Example configuration is below
+        ```java
+        @Override
+        public BaseLocalizerConfig<Pinpoint.Config> setLocalizerConstants() {
+            return new Pinpoint.Config()
+                    .setName("pinpoint")
+                    .setOffsets(0, 0, DistUnit.IN)
+                    .setEncoderDirections(Pinpoint.EncoderDirection.FORWARD, Pinpoint.EncoderDirection.REVERSE)
+                    .setEncoderResolution(Pinpoint.GoBildaPods.goBILDA_4_BAR_POD);
+        }
+        ```
+        
+  </Tabs.Tab>
+  <Tabs.Tab>
+  Pinpoint constants configure the hardware name, physical pod offsets, wheel directions, and encoder ticks.
+      <Steps>
+      ### Step 1 -- Name
+      Call `.setName()` in order to set the name of the Pinpoint device on your control hub.
+  
+      ### Step 2 -- Offsets
+      Call `.setOffsets()` in order to set the offsets of the PInpoint dead wheels. Do so according to the diagram below. 
+  
+      ### Step 3 -- Direction
+      Call `.setEncoderDirections()` in order to flip the directions of the dead wheels. Run the `TeleOP Test` to make sure that moving the bot forward increases the `y` of your position and moving the bot to the right increases the `x` of your position.
+  
+      ### Step 4 -- Resolution
+      Set the type of odometry you are using. For 4-Bar-Pods, it'll be `Pinpoint.GoBildaPods.goBILDA_4_BAR_POD` and for Swing-Arm `Pinpoint.GoBildaPods.goBILDA_SWINGARM_POD`. If you're using a custom odometry solution, input a double in ticks per mm representing the resolution of the odometry pods. 
+      </Steps>
+      Example configuration is below
+          ```java
+          @Override
+          public BaseLocalizerConfig<Pinpoint.Config> setLocalizerConstants() {
+              return new Pinpoint.Config()
+                      .setName("pinpoint")
+                      .setOffsets(0, 0, DistUnit.IN)
+                      .setEncoderDirections(Pinpoint.EncoderDirection.FORWARD, Pinpoint.EncoderDirection.REVERSE)
+                      .setEncoderResolution(Pinpoint.GoBildaPods.goBILDA_4_BAR_POD);
+          }
+          ```
+  </Tabs.Tab>
+  <Tabs.Tab>**Three Wheel Odometry Localizer**</Tabs.Tab>
+  <Tabs.Tab>**Two Wheel Odometry Localizer**</Tabs.Tab>
+  <Tabs.Tab>**Drive Encoder Localizer**</Tabs.Tab>
+</Tabs>

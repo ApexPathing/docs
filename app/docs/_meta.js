@@ -19,6 +19,6 @@ export default {
         type: "separator",
         title: "Core Concepts"
     },
-    "misc": "Controllers",
+    "controllers": "Controllers",
     "bspline-theory": "B Spline Theory",
 }

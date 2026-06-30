@@ -1,0 +1,45 @@
+# PDS Controller
+---
+A PDS (Proportional-Derivative-Static) controller is a type of feedback controller similar to a PID controller.
+It removes the integral (I) term from the PID controller, which is unnecessary for path following.
+Adding the static (S) term allows the controller to break through static friction, which is important for smooth robot movement.
+The PDS controller is used in Apex Pathing to control the robot's movement along a path with high precision and accuracy.
+
+## Coefficients
+Our controller contains four coefficients:
+* **Proportional**: Multiplied by the current positional error in inches. This term is responsible for the majority of the robot's movement.
+* **Derivative**: Multiplied by the change in error since the last update. Helps to reduce oscillation.
+* **Static**: A constant power added to the output that helps the robot to break through static friction.
+* **Static Deadzone**: The minimum error required for the static term to be applied. This prevents the robot from oscillating when it is close to the target position.
+
+## How it works
+First, the controller multiplies the current positional error by the proportional coefficient:
+`double proportional = this.coeffs.kP * error;`
+
+The derivative term is calculated by multipling kD by the change in error since the last update divided 
+by the time since the last update. If `timeAnomalyDetected` is true, the derivative term is set to 0.0 to 
+prevent the controller from reacting to sudden changes in error due to `deltaTime` being too small/big:
+`double derivative = this.coeffs.kD * (timeAnomalyDetected ? 0.0 : (error - lastError) / deltaTime);`
+
+Finally, the static term is calculated by multiplying kS by the sign of the error (+1 or -1). If the absolute value 
+of the error is less than kSDeadzone, the static term is set to 0.0 to prevent oscillation:
+`double minimum = this.coeffs.kS * Math.signum(error) * (Math.abs(error) > this.coeffs.kSDeadzone ? 1.0 : 0.0);`
+
+The terms are then summed together to produce the final output:
+`return proportional + derivative + minimum;`
+
+Putting them all together into the `computeOutput` method, we have:
+```java
+@Override
+protected double computeOutput(double error, double lastError, double deltaTime) {
+    double proportional = this.coeffs.kP * error;
+    double derivative = this.coeffs.kD * (timeAnomalyDetected ? 0.0 :
+            (error - lastError) / deltaTime);
+    double minimum =
+            this.coeffs.kS * Math.signum(error) * (Math.abs(error) > this.coeffs.kSDeadzone ?
+                    1.0 : 0.0);
+    return proportional + derivative + minimum;
+}
+```
+See more about this controller on the
+[GitHub page](https://github.com/ApexPathing/ApexPathing/blob/main/TeamCode/src/main/java/controllers/PDSController.java)

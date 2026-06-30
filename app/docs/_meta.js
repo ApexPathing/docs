@@ -21,4 +21,5 @@ export default {
     },
     "controllers": "Controllers",
     "bspline-theory": "B Spline Theory",
+    "arc-poses": "Arc Poses",
 }

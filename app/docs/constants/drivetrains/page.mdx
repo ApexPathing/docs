@@ -20,8 +20,8 @@ Choose your drivetrain type below and follow the steps to configure it.
     ```
     ### Motors
     Replace the names of the motors with the names of your drivetrain motors in the hardware configuration.
-    If your motors are reversed, call `.reverse()` for that motor. See more about the [MotorFactory](../classes/motor-factory/) class.
-    You can use the `MotorDebugger` OpMode in the [OpModes](../opmodes/) page to get your motor positions and directions correct.
+    If your motors are reversed, call `.reverse()` for that motor. See more about the [MotorFactory](/docs/classes/motor-factory/) class.
+    You can use the `MotorDebugger` OpMode in the [OpModes](/docs/opmodes/) page to get your motor positions and directions correct.
 
     ### Global drivetrain constants (optional)
     See the bottom of this page for more details
@@ -43,8 +43,8 @@ Choose your drivetrain type below and follow the steps to configure it.
     ### Motors
     Replace the names of the motors with the names of your drivetrain motors in the hardware configuration.
     Don't define the back left and back right motors if you are using a 2-motor tank drive.
-    If your motors are reversed, call `.reverse()` for that motor. See more about the [MotorFactory](../classes/motor-factory/) class.
-    You can use the `MotorDebugger` OpMode in the [OpModes](../opmodes/) page to get your motor positions and directions correct.
+    If your motors are reversed, call `.reverse()` for that motor. See more about the [MotorFactory](/docs/classes/motor-factory/) class.
+    You can use the `MotorDebugger` OpMode in the [OpModes](/docs/opmodes/) page to get your motor positions and directions correct.
 
     ### Global drivetrain constants (optional)
     See the bottom of this page for more details
@@ -71,8 +71,8 @@ Choose your drivetrain type below and follow the steps to configure it.
     ```
     ### Motors
     Replace the names of the motors with the names of your drivetrain motors in the hardware configuration.
-    If your motors are reversed, call `.reverse()` for that motor. See more about the [MotorFactory](../classes/motor-factory/) class.
-    You can use the `MotorDebugger` OpMode in the [OpModes](../opmodes/) page to get your motor positions and directions correct.
+    If your motors are reversed, call `.reverse()` for that motor. See more about the [MotorFactory](/docs/classes/motor-factory/) class.
+    You can use the `MotorDebugger` OpMode in the [OpModes](/docs/opmodes/) page to get your motor positions and directions correct.
 
     ### Servos
     Replace the names of the servos with the names of your drivetrain servos in the hardware configuration.
@@ -82,12 +82,12 @@ Choose your drivetrain type below and follow the steps to configure it.
 
     ### Track width and wheelbase
     Set the track width (distance from left wheel center to right wheel center) and wheelbase 
-    (distance from front wheel center to back wheel center) of your robot as a [Dist](../classes/dist/).
+    (distance from front wheel center to back wheel center) of your robot as a [Dist](/docs/classes/dist/).
 
     ### Offset angle and steering coefficients
-    Use the `SwerveTuner` OpMode in the [OpModes](../opmodes/) page to determine the offset angle
+    Use the `SwerveTuner` OpMode in the [OpModes](/docs/opmodes/) page to determine the offset angle
     and PDS steering coefficients of your pods. The offset angle is the static angle offset from 0 
-    degrees for your wheels to be facing forwards. It is defined as an [Angle](../classes/angle/).
+    degrees for your wheels to be facing forwards. It is defined as an [Angle](/docs/classes/angle/).
     The steering coefficients are used to correct positional errors in the steering of your pods. 
 
     ### Global drivetrain constants (optional)
@@ -109,8 +109,8 @@ Choose your drivetrain type below and follow the steps to configure it.
     ```
     ### Motors
     Replace the names of the motors with the names of your drivetrain motors in the hardware configuration.
-    If your motors are reversed, call `.reverse()` for that motor. See more about the [MotorFactory](../classes/motor-factory/) class.
-    You can use the `MotorDebugger` OpMode in the [OpModes](../opmodes/) page to get your motor positions and directions correct.
+    If your motors are reversed, call `.reverse()` for that motor. See more about the [MotorFactory](/docs/classes/motor-factory/) class.
+    You can use the `MotorDebugger` OpMode in the [OpModes](/docs/opmodes/) page to get your motor positions and directions correct.
 
     ### Global drivetrain constants (optional)
     See the bottom of this page for more details
@@ -135,8 +135,8 @@ Choose your drivetrain type below and follow the steps to configure it.
     ```
     ### Motors
     Replace the names of the motors with the names of your drivetrain motors in the hardware configuration.
-    If your motors are reversed, call `.reverse()` for that motor. See more about the [MotorFactory](../classes/motor-factory/) class.
-    You can use the `MotorDebugger` OpMode in the [OpModes](../opmodes/) page to get your motor positions and directions correct.
+    If your motors are reversed, call `.reverse()` for that motor. See more about the [MotorFactory](/docs/classes/motor-factory/) class.
+    You can use the `MotorDebugger` OpMode in the [OpModes](/docs/opmodes/) page to get your motor positions and directions correct.
 
     ### Actuators
     You can add or remove `.addActuator()` calls depending on how many actuators your drivetrain has. 
@@ -167,14 +167,14 @@ are usually sufficient for most robots. You can override them in your drivetrain
     - Sets the maximum power that can be applied to drivetrain motors.
     - Default is 1.0 (100% power)
 - `setLinearVelocityLimit(Dist linearVelocityLimit)`
-    - Sets the maximum linear velocity of the robot as a [Dist](../classes/dist/) in units per second.
+    - Sets the maximum linear velocity of the robot as a [Dist](/docs/classes/dist/) in units per second.
     - Default is 0 (disabled, no limit)
 - `setAngularVelocityLimit(Angle angularVelocityLimit)`
-    - Sets the maximum angular velocity of the robot as an [Angle](../classes/angle/) in units per second.
+    - Sets the maximum angular velocity of the robot as an [Angle](/docs/classes/angle/) in units per second.
     - Default is 0 (disabled, no limit)
 - `setLinearAccelerationLimit(Dist linearAccelerationLimit)`
-    - Sets the maximum linear acceleration of the robot as a [Dist](../classes/dist/) in units per second squared.
+    - Sets the maximum linear acceleration of the robot as a [Dist](/docs/classes/dist/) in units per second squared.
     - Default is 0 (disabled, no limit)
 - `setAngularAccelerationLimit(Angle angularAccelerationLimit)`
-    - Sets the maximum angular acceleration of the robot as an [Angle](../classes/angle/) in units per second squared.
+    - Sets the maximum angular acceleration of the robot as an [Angle](/docs/classes/angle/) in units per second squared.
     - Default is 0 (disabled, no limit)

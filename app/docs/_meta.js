@@ -20,6 +20,7 @@ export default {
         title: "Core Concepts"
     },
     "controllers": "Controllers",
+    "interpolation": "Heading Interpolation",
     "bspline-theory": "B Spline Theory",
     "arc-poses": "Arc Poses",
 }

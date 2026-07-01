@@ -1,0 +1,48 @@
+---
+asIndexPage: true
+description:
+  Stay up to date with the latest changes and improvements to Apex Pathing. 
+  This page contains a chronological list of all updates, bug fixes, and new features added to the software.
+---
+
+import { Callout } from "nextra/components";
+
+# Changelog
+Here we keep a chronological list of all updates, bug fixes, and new features added to Apex Pathing.
+The first number of a version indicates major rewrites and breaking changes to the library,
+the second number indicates new features and large improvements, and the third number indicates bug 
+fixes and minor improvements. A version with a "b" at the end indicates a beta release, which may 
+contain bugs and is not recommended for production use (mainly for our beta testers).
+
+<Callout type="warning">
+    There are currently no releases of Apex, the changelog below is simply for testing purposes.
+</Callout>
+
+{/* 
+ * Add new releases here at the top, here is a template for a new release:
+ * ## v0.0.0 (YYYY-MM-DD)
+ * This is a description of the release, what was added, changed, or fixed. You should use
+ * subheadings to seperate breaking changes, new features, bug fixes, and other changes.
+ * Subheadings should be created with {<h3>Subheading</h3>} instead of markdown syntax to avoid TOC issues.
+ * You can also use bullet points to list specific changes.
+ * 
+ * See more on the [GitHub release](https://github.com/ApexPathing/ApexPathing/releases/tag/v0.0.0) page.
+*/}
+
+
+## v0.0.0b (2026-07-01)
+This is the first release of Apex Pathing to our beta testers.
+
+{<h3>Including</h3>}
+- B spline based path follower
+- Intuitive path builder API
+- Mecanum, tank, coaxial/differential swerve, kiwi, and dual actuated drivetrain support
+- Pinpoint, OTOS, two/three pod, and Octoquad localizer support (motor encoder support is in the works)
+- Automatic tuning process (mostly)
+- Up to date documentation and examples for all tuning and most features/core concepts
+- Much more
+
+There will be many feature additions and bug fixes in the next couple weeks before 
+the official release of Apex Pathing v1.0.0.
+
+See more on the [GitHub release](https://github.com/ApexPathing/ApexPathing/releases/tag/v0.0.0b) page.

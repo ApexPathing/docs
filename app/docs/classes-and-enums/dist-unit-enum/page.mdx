@@ -1,0 +1,22 @@
+# DistUnit - Enum
+---
+
+The `DistUnit` enum is used to specify the unit of measurement for distances in Apex Pathing. 
+It provides a clear and consistent way to define the unit of a distance value.
+
+See the enum on [GitHub](https://github.com/ApexPathing/ApexPathing/blob/main/TeamCode/src/main/java/util/DistUnit.java)
+for more information about the implementation of the `DistUnit` enum.
+
+## Enum Values
+- `DistUnit.IN`: Inches
+- `DistUnit.FT`: Feet
+- `DistUnit.M`: Meters
+- `DistUnit.CM`: Centimeters
+- `DistUnit.MM`: Millimeters
+
+## Methods
+The enum has two methods:
+- `toInches(double value)`: Converts the given distance value from the `DistUnit` to inches.
+- `fromInches(double value)`: Converts the given distance value from inches to the `DistUnit`.
+
+While these methods are meant for internal use, they are accessible outside of the enum.

@@ -19,6 +19,7 @@ export default {
         type: "separator",
         title: "Core Concepts"
     },
+    "classes-and-enums": "Useful Classes and Enums",
     "controllers": "Controllers",
     "interpolation": "Heading Interpolation",
     "bspline-theory": "B Spline Theory",

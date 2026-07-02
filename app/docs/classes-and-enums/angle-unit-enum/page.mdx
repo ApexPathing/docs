@@ -1,0 +1,19 @@
+# AngleUnit - Enum
+---
+
+The `AngleUnit` enum is used to specify the unit of measurement for angles in Apex Pathing. 
+It provides a clear and consistent way to define whether angles are represented in degrees or radians.
+
+See the enum on [GitHub](https://github.com/ApexPathing/ApexPathing/blob/main/TeamCode/src/main/java/util/AngleUnit.java)
+for more information about the implementation of the `AngleUnit` enum.
+
+## Enum Values
+- `AngleUnit.DEG`: Represents angles in degrees.
+- `AngleUnit.RAD`: Represents angles in radians.
+
+## Methods
+The enum has two methods:
+- `toRadians(double value)`: Converts the given angle value from the `AngleUnit` to radians.
+- `fromRadians(double value)`: Converts the given angle value from radians to the `AngleUnit`.
+
+While these methods are meant for internal use, they are accessible outside of the enum.

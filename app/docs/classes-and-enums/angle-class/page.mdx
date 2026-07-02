@@ -1,0 +1,35 @@
+# Angle - Class
+---
+
+The `Angle` class is used to represent angles in Apex Pathing. It provides a 
+clear and consistent way to provide for units and methods. This class makes use
+of the `AngleUnit` enum to specify the unit of measurement for angles. You can
+read more about the `AngleUnit` enum in the [AngleUnit - Enum](../angle-unit-enum)
+documentation. Angle values are stored internally as a double in radians.
+
+See the class on [GitHub](https://github.com/ApexPathing/ApexPathing/blob/main/TeamCode/src/main/java/geometry/Angle.java)
+for more information about the implementation of the `Angle` class.
+
+## Construction
+- `Angle.of(double value, AngleUnit unit)`: Creates a new `Angle` object with the
+specified value and unit of measurement.
+- `Angle.fromRad(double value)`: Creates a new `Angle` object from a value in radians.
+- `Angle.fromDeg(double value)`: Creates a new `Angle` object from a value in degrees.
+- `Angle.zero()`: Creates a new `Angle` object representing an angle of zero.
+
+## Getters
+- `get(AngleUnit unit)`: Returns the angle value in the specified unit of measurement.
+- `getRad()`: Returns the angle value in radians.
+- `getDeg()`: Returns the angle value in degrees.
+
+## Operations
+- `plus(Angle other)`: Returns a new `Angle` object representing the sum of this angle and the specified angle.
+- `minus(Angle other)`: Returns a new `Angle` object representing the difference between this angle and the specified angle.
+- `times(double factor)`: Returns a new `Angle` object representing this angle multiplied by the specified factor.
+- `div(double divisor)`: Returns a new `Angle` object representing this angle divided by the specified divisor.
+- `mirrorX()`: Returns a new `Angle` object representing this angle mirrored across the X-axis.
+- `mirrorY()`: Returns a new `Angle` object representing this angle mirrored across the Y-axis.
+- `normalized()`: Returns a new `Angle` object representing this angle normalized to the range [0, 2π] radians.
+- `Angle.normalize(double radians)`: Normalizes the specified angle in radians to the range [0, 2π] radians.
+- `getShortestAngleTo(Angle other)`: Returns a new `Angle` object representing the shortest angle between this angle and the specified angle.
+- `copy()`: Returns a new `Angle` object that is a copy of this angle.

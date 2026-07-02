@@ -19,65 +19,55 @@ const tutorials: TutorialProps[] = [
   {
     name: "Getting Started",
     description: "Learn the basics of Apex Pathing and how to get started with your robot.",
-    docs_link: "/docs/"
+    docs_link: "/docs/installation"
   },
   {
-    name: "Advanced Features",
-    description: "Explore the advanced capabilities of Apex Pathing for complex robot movements.",
-    docs_link: "/docs/"
+    name: "Following Paths",
+    description: "Check out how you can implement Apex in to common control strategies.",
+    docs_link: "/docs/following-paths"
   },
   {
-    name: "Behind the scenes",
-    description: "Dive into the technical details of how Apex Pathing works.",
-    docs_link: "/docs/"
+    name: "B-Spline Theory",
+    description: "Dive into the technical details and math of Apex Pathing's B-Spline implementation.",
+    docs_link: "/docs/bspline-theory"
   },
   {
-    name: "Tutorial 4",
-    description: "This is a placeholder for a future tutorial.",
-    docs_link: "/docs/"
+    name: "Arc Poses",
+    description: "See how you can use Arc Poses to work smarter and create effective robot paths.",
+    docs_link: "/docs/arc-poses"
   },
   {
-    name: "Tutorial 5",
-    description: "This is a placeholder for a future tutorial.",
-    docs_link: "/docs/"
+    name: "Troubleshooting",
+    description: "Learn how to troubleshoot common issues with Apex Pathing.",
+    docs_link: "/docs/troubleshooting"
   }
 ];
 
-interface ReleaseProps {
-  product: string;
+interface RepositoryProps {
+  name: string;
   description: string;
-  version: string;
-  date: string;
-  github_link: string;
+  link: string;
 }
-const releases: ReleaseProps[] = [
+const repositories: RepositoryProps[] = [
   {
-    product: "Library",
-    description: "The core gradle library that holds the Apex Pathing algorithms and features.",
-    version: "v0.0.0.beta",
-    date: "2026-05-30",
-    github_link: "https://github.com/ApexPathing/main"
+    name: "Library",
+    description: "The core Gradle library that holds the Apex Pathing algorithms and features.",
+    link: "https://github.com/ApexPathing/ApexPathing"
   },
   {
-    product: "Quickstart",
+    name: "Quickstart",
     description: "A simple quickstart project to help you get up and running with Apex Pathing on your robot.",
-    version: "v0.0.0.beta",
-    date: "2026-05-30",
-    github_link: "https://github.com/ApexPathing/quickstart"
+    link: "https://github.com/ApexPathing/quickstart"
   },
   {
-    product: "Documentation",
+    name: "Documentation",
     description: "The web-based documentation for learning about Apex Pathing and its features (this site).",
-    version: "v0.0.0.beta",
-    date: "2026-05-30",
-    github_link: "https://github.com/ApexPathing/docs"
+    link: "https://github.com/ApexPathing/docs"
   },
   {
-    product: "Visualizer",
-    description: "A web-based tool for creating exportable paths that the robot will follow.",
-    version: "v0.0.0.beta",
-    date: "2026-05-30",
-    github_link: "https://github.com/ApexPathing/visualizer"
+    name: "Visualizer",
+    description: "A web-based tool for creating poses and paths for your Apex Pathing autonomous.",
+    link: "https://github.com/ApexPathing/visualizer"
   }
 ];
 
@@ -112,7 +102,6 @@ const socialLinks: SocialProps[] = [
 export default function Home() {
   const [isScrollIndicatorVisible, setScrollIndicator] = useState(true);
         
-
   useEffect(() => {
     const handleScroll = () => {
       setScrollIndicator(window.scrollY < 50);
@@ -154,7 +143,7 @@ export default function Home() {
 
       <div className="relative z-20 flex flex-col w-full max-w-6xl px-6 pb-10">
         <div className="w-full p-6 mb-8 border border-divider rounded-xl bg-neutral-900 shadow-sm">
-          <h3 className="text-2xl text-brand-primary-hover font-bold mb-4">Path Example</h3>
+          <h3 className="text-2xl text-brand-primary-hover font-bold mb-4">Showcase</h3>
           <div className="w-full rounded-lg overflow-hidden border border-divider bg-background">
             <HomePageCode />
           </div>
@@ -174,13 +163,12 @@ export default function Home() {
         </div>
 
         <div className="w-full p-6 mt-8 border border-divider rounded-xl bg-neutral-900 shadow-sm">
-          <h3 className="text-2xl text-brand-primary-hover font-bold mb-4">Releases</h3>
+          <h3 className="text-2xl text-brand-primary-hover font-bold mb-4">Repositories</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
-            {releases.map((release, index) => (
-              <div key={index} className="flex flex-col p-4 gap-2 rounded-lg border border-divider bg-background hover:shadow-xl hover:border-brand-primary transition-all cursor-pointer" onClick={() => window.open(release.github_link, '_blank')}>
-                <h4 className="text-lg font-semibold">{release.product} - <span className="text-brand-primary">{release.version}</span></h4>
-                <p className="text-sm text-accent-text">{release.description}</p>
-                <p className="text-xs text-neutral-400 mt-2">Released on {release.date}</p>
+            {repositories.map((repository, index) => (
+              <div key={index} className="flex flex-col p-4 gap-2 rounded-lg border border-divider bg-background hover:shadow-xl hover:border-brand-primary transition-all cursor-pointer" onClick={() => window.open(repository.link, '_blank')}>
+                <h4 className="text-lg font-semibold">{repository.name}</h4>
+                <p className="text-sm text-accent-text">{repository.description}</p>
               </div>
             ))}
           </div>

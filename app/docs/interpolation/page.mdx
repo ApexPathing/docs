@@ -251,6 +251,6 @@ path = builder.path( // Start and end headings aren't needed for facing pose int
 ```
 
 If you want to add a fixed angular offset, similar to tangent custom interpolation, you can add that after the pose.
-```
+```java
 .interpolateWith(HolonomicInterpolationStyle.FACING_POSE, pose.of(-10, 10), Angle.fromDeg(45))
 ```

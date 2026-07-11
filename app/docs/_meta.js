@@ -24,4 +24,8 @@ export default {
     "interpolation": "Heading Interpolation",
     "bspline-theory": "B Spline Theory",
     "arc-poses": "Arc Poses",
+    "motion-profiling": "Motion Profiling",
+    "path-constraints": "Path Constraints",
+    "quick-builds": "Quick Builds",
+    "profiled-builds": "Profiled Builds",
 }

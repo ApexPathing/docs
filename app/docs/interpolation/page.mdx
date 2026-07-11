@@ -224,7 +224,7 @@ path = builder.path(
             pose.of(20, 20),
             pose.of(45, 0, 180) // End heading is 180 degrees
     )
-    .interpolateWith(HolonomicInterpolationStyle.NODE_BASED)
+    .interpolateWith(HolonomicInterpolationStyle.NODE_BASED) // This is optional, using .addheadingNode will automatically switch the interpolation to node based
     .addHeadingNode(0.5, Angle.fromDeg(270)) // Node 1
     .addHeadingNode(0.8, Angle.fromDeg(45)) // Node 2
     // You can add as many nodes as you want
@@ -248,4 +248,9 @@ path = builder.path( // Start and end headings aren't needed for facing pose int
     )
     .interpolateWith(HolonomicInterpolationStyle.FACING_POSE, pose.of(-10, 10))
     .profiledBuild();
+```
+
+If you want to add a fixed angular offset, similar to tangent custom interpolation, you can add that after the pose.
+```
+.interpolateWith(HolonomicInterpolationStyle.FACING_POSE, pose.of(-10, 10), Angle.fromDeg(45))
 ```

@@ -1,0 +1,67 @@
+# Quick Builds
+---
+Quick Builds, created by calling `.quickBuild()` in a movement builder, skip the full motion profiling process. This makes
+them extremely fast to generate and allows the follower to decide how fast to move while the robot is already following the
+path.
+
+For a holonomic drivetrain, a quick build stores only the path geometry and heading interpolation. During every follower
+update, Apex finds the closest point on the path and calculates the corrections needed to stay on it. It then uses a
+waterfall power priority to decide which commands receive the available motor power.
+
+Tank drives are handled a little differently because their Ramsete controller requires velocity targets. A tank quick build
+generates a basic acceleration-and-deceleration profile, but it does not solve the complete coupled power model used by a
+profiled build. The waterfall described below applies to holonomic drivetrains.
+
+## When Should I use a Quick Build?
+Quick builds are good for most paths, but they work best when:
+- A slip-proof localization method is being used (i.e. two-wheel odometry)
+- The path is generated during the `runOpMode` phase because computation is minimal
+- The path is simple with no sharp curves (i.e. lines)
+- Translational speed is prioritized over accuracy and repeatability
+
+Quick builds should almost never be used when:
+- Complex path constraints need to be added
+- Drive encoders are being used for localization
+- High accuracy/consistency is the priority
+
+## Waterfall Power Priority
+Imagine starting with a bucket containing `1.0`, or 100%, of the robot's available power. Each control stage takes what it
+needs from the bucket, then passes whatever remains to the next stage.
+
+Heading receives power first. If the robot is facing the wrong direction, Apex applies the required turning correction and
+reserves that power before doing anything else:
+
+$$P_{remaining} = 1 - |P_{turn}|$$
+
+Path correction receives power next. This includes feedback that pushes the robot toward the path and centripetal
+feedforward that pushes it inward around a curve. Apex limits this correction to the power remaining after the turn.
+
+Forward motion receives power last. It can only use what remains after the robot has been given enough power to face the
+correct direction and stay on the path.
+
+This ordering is what makes the system behave well without a complete motion profile. If the robot drifts away from the
+path, the correction grows and automatically leaves less power for moving forward. The robot slows down, returns to the
+path, and then speeds back up as the correction shrinks. Continuing forward is never treated as more important than being
+under control.
+
+## The Limitation
+The waterfall can react to a difficult curve, but it cannot fully prepare for one. A quick build may enter a sharp turn too
+fast and only reduce forward power once turning and path correction begin consuming the power budget. A
+[Profiled Build](/docs/profiled-builds) examines the curve ahead of time and plans the slowdown before the robot reaches it.
+
+Quick builds still regulate forward velocity and slow down near the end of the path. On holonomic paths, translational
+velocity constraints can also change the maximum target speed at chosen points. However, acceleration and angular
+constraints require a profiled build.
+
+## Using Quick Builds
+Call `.quickBuild()` at the end of a movement builder:
+
+```java
+Path path = Builder.holonomicPath(startPose)
+        // Add path segments and heading interpolation.
+        .quickBuild();
+```
+
+Quick builds are useful for simple paths, testing, and movements where fast generation matters more than maximum speed
+through complex geometry. They are also generally recommended for point turns. For the difference between the two profiling
+styles, see [Motion Profiling](/docs/motion-profiling).

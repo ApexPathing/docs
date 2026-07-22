@@ -1,0 +1,84 @@
+import { Callout } from 'nextra/components'
+
+# Path Constraints
+---
+The limits in your drivetrain constants describe what the robot can do everywhere. Path constraints let you lower those
+limits for a particular part of one path.
+
+Think of them like speed-limit signs. The robot may normally be capable of moving at 60 inches per second, but a constraint
+can limit it to 30 inches per second before a narrow or precise section. The lower limit remains active until another
+constraint of the same type replaces it.
+
+## Where a Constraint Starts
+Every constraint has an `s` value from `0.0` to `1.0` describing its position along the path. An `s` of `0.0` is the start,
+`0.5` is halfway by distance, and `1.0` is the end. Once the robot passes that point, the constraint becomes active.
+
+For example, this lowers the translational velocity limit after the robot reaches 25% of the path:
+
+```java
+.addConstraint(new TranslationalConstraint(
+        0.25,
+        ConstraintType.VELOCITY,
+        Dist.fromIn(30)
+))
+```
+
+To restore a higher limit later, add another velocity constraint:
+
+```java
+.addConstraint(new TranslationalConstraint(
+        0.75,
+        ConstraintType.VELOCITY,
+        Dist.fromIn(55)
+))
+```
+
+## Constraint Types
+A `TranslationalConstraint` limits movement along the path. With `ConstraintType.VELOCITY`, it limits linear speed. With
+`ConstraintType.ACCELERATION`, it limits how quickly that speed may change.
+
+An `AngularConstraint` applies the same idea to heading. Its velocity form limits how quickly the robot may rotate, while
+its acceleration form limits how quickly that rotation rate may change.
+
+```java
+.addConstraint(new TranslationalConstraint(
+        0.20, ConstraintType.ACCELERATION, Dist.fromIn(40)
+))
+.addConstraint(new AngularConstraint(
+        0.20, ConstraintType.VELOCITY, Angle.fromRad(2.0)
+))
+```
+
+A [Profiled Build](/docs/profiled-builds) uses all four forms while generating its velocity and acceleration plan. A
+holonomic [Quick Build](/docs/quick-builds) only uses translational velocity constraints because it does not generate the
+complete profile needed to enforce acceleration and angular limits ahead of time.
+
+## `useBoostedAccel()`
+A normal motion profile assumes the robot begins and ends the path at zero velocity. This gives the generator enough room to
+plan a controlled acceleration away from the start and a controlled slowdown before the end.
+
+<Callout type="warning">
+    `useBoostedAccel()` will have no effect on a `quickBuild` path. `quickBuild` paths inherently must use faster acceleration
+    because they are fully feedback-based.
+</Callout>
+
+`useBoostedAccel()` removes those zero-velocity boundary conditions. The profile may begin and end at its allowed cruising
+speed, letting velocity feedback request much more acceleration at the start and much more braking near the end. The follower
+still uses the translational PDS controller applied tangentially to the path to prevent the robot from driving through the final point.
+
+This does not increase the configured velocity or acceleration limits. Instead, it stops the profile from reserving distance
+for a gradual start and stop, allowing the feedback controller to use the available power more aggressively.
+
+Boosted acceleration is useful when completing a movement as quickly as possible matters more than a gentle transition.
+It is generally recommended only for robots with robust localization such as a two wheel odometry system to `useBoostedAccel()`
+because the wheel slip involved in aggressive movements prevents drive encoders from reporting accurate positional data.
+
+To use the boosted acceleration, simply call `useBoostedAccel()` anywhere in the path builder API:
+
+```java
+Path examplePath = new Builder.holonomicPath(
+    pose.of(0,0),
+    pose.of(10,30))
+    .useBoostedAccel()
+    .profiledBuild();
+```

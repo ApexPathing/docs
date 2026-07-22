@@ -1,0 +1,128 @@
+# Profiled Builds
+---
+Profiled Builds, created by calling `.profiledBuild` in any movement builder, allow for the creation of a full kinematically
+constrained motion profile for any path. This increases the accuracy, predictability, and consistency of all movements at
+the cost of additional generation time. Apex uses a special algorithm to create an optimal motion profile that doesn't violate any of
+the robot's physical limits.
+
+## When Should I Use a Profiled Build?
+Profiled builds are excellent for any path, but they have the most benefit when:
+- The path is built during `initialize` because compute is quite heavy
+- The path has complex geometry that must be followed precisely (i.e. sharp splines near obstacles or other robots)
+- Constraints need to be added to the path (`quickBuild` only allows for translational velocity constraints)
+- Smooth motion is needed
+- Accuracy is prioritized over other goals (i.e. speed)
+- A precise heading interpolation is prioritized other goals (i.e. speed)
+
+## The Motivation
+Every drivetrain has a problem that plagues it: limited power availability. If you have prior programming experience, you
+know that motors can only be commanded with a power from `-1.0` to `1.0`. You can actually feel this problem yourself by
+driving around your robot on the field: if you drive your robot forward at full throttle it goes really fast, but if you also
+try to turn at full throttle at the same time, your robot suddenly slows down. This is because of that `[-1.0, 1.0]` limit.
+When you drive forward at full power (all motors at 1.0) and then add in a turn input, you have to subtract that turn command
+from all your motors in order to allow the robot to turn. Traditionally, this issue has been mitigated with normalization.
+If one of the motors on the robot exceeds full power, divide all the motor powers by that magnitude like this:
+
+```java
+double maxFrontPower = Math.max(Math.abs(frontRightPower), Math.abs(frontLeftPower));
+double maxBackPower = Math.max(Math.abs(backRightPower), Math.abs(backLeftPower));
+double globalMaxPower = Math.max(Math.abs(maxFrontPower), Math.abs(maxBackPower));
+if (globalMaxPower > 1.0) {
+    frontRightPower /= globalMaxPower;
+    frontLeftPower /= globalMaxPower;
+    backRightPower /= globalMaxPower;
+    backLeftPower  /= globalMaxPower;
+}
+```
+
+Or you can also look at this from the perspective of vector/component controls. The motor powers themselves are derived from drive,
+strafe, and turn inputs. It turns out that for a mecanum drivetrain the max global power is simply the absolute magnitude of
+all these components.
+
+```java
+globalMaxPower = Math.abs(drive) + Math.abs(strafe) + Math.abs(turn);
+// ... same code as before ...
+```
+
+This strategy of normalizing components is extremely helpful in TeleOp because it maintains directional behavior, but in
+Autonomous, it's not great. In some circumstances it can be problematic since it means that - for example - if a forward
+velocity is commanded and an angular velocity is simultaneously added, then the robot might fail to move while respecting
+those targets. This is called saturation: when a system is commanded beyond a state it can reasonably achieve.
+
+This is bad from the standpoint of keeping a speed target, but even if you don't care about speed and just want the most
+amount of power from the wheels as possible, it still causes issues when it comes to path curvature. This is self-evident
+just by watching a racecar go on a track. The driver slows down their car before a turn to ensure they don't spin out
+and lose traction. The same principle applies to robots: move the robot around the curve too fast, and it can't maintain
+control. Either it will literally slip (if it is a tank configuration) or it will not have the available power to impose
+a correctional force. This behavior surrounding curves is made even worse with a tangential heading interpolation
+because the robot tries to turn, apply an inward correctional force, and move forward all at the same time. If the robot
+is already moving fast, managing the system becomes momentarily impossible and accuracy is lost as a result. Even with
+the mitigation techniques discussed in the quick build page, instability is still inevitable.
+
+Apex's motion profiling seeks to fix the issues of saturation by pre-planning the physical state (velocities and accelerations)
+of the robot at each point to achieve negligible amounts of saturation.
+
+## How It Works
+In order to find the optimal profile where as much power is being used as possible while still obeying the robot's limits
+(i.e. max velocity, max angular velocity, etc.), the system first needs information about how much power is being used. This
+changes depending on the drivetrain. For example, the `globalMaxPower` of a mecanum drive is:
+
+$|P_{drive}| + |P_{strafe}| + |P_{turn}|$
+
+For an isotropic drive, such as a swerve drive, it is:
+
+$\sqrt{{P_{drive}}^2 + {P_{strafe}}^2} + |P_{turn}|$
+
+To calculate this value, Apex asks where the robot's power is going. Some power moves the robot along the path, some pushes
+it inward around a curve, and some turns it toward its target heading.
+
+The power used to move along the path is the normal feedforward equation:
+
+$$P_{drive} = |vk_v + ak_a + k_s|$$
+
+Here, $v$ is the target speed, $a$ is the target acceleration, and $k_s$ is the small amount of power needed to overcome
+static friction. Curves also require an inward, or centripetal, force:
+
+$$P_{curve} = |\kappa v^2 k_c|$$
+
+$\kappa$ describes how sharply the path curves. Notice that velocity is squared: going twice as fast around the same curve
+requires four times as much centripetal power. This is why the robot has to slow down before a sharp turn.
+
+Finally, Apex calculates how quickly the target heading changes as the robot moves along the path. If the target heading is
+written as $f(s)$, where $s$ is distance along the path, then:
+
+$$\omega = f'(s)v$$
+
+$$\alpha = f''(s)v^2 + f'(s)a$$
+
+These values are passed through the angular feedforward equation to find $P_{turn}$. Mecanum drives add all three demands,
+while swerve drives combine $P_{drive}$ and $P_{curve}$ as a vector before adding $P_{turn}$. Tank drives only add forward
+and turning power. In every case, `1.0` means all available power is being used.
+
+### Generating the Profile
+Apex starts by sampling points across the path. At each point, it guesses a velocity and calculates how much power that
+velocity would require. If the result is above `1.0`, the guess is too fast; if it is below `1.0`, the guess can be increased.
+A binary search quickly finds the highest valid velocity for every point.
+
+Those individual limits do not yet form a driveable profile. The robot cannot instantly slow down when it reaches a curve,
+so Apex works backward from the end of the path to make sure it begins braking early enough. It then works forward from the
+start to make sure every increase in speed is achievable with the robot's acceleration limit.
+
+Acceleration itself also consumes power, so Apex performs one final check using the complete velocity and acceleration
+profile. If a point still needs more than full power, Apex lowers a nearby velocity and repeats the forward and backward
+passes. The process stops once the whole path can be followed without exceeding the drivetrain's power budget.
+
+The finished profile is stored by distance along the path rather than time. If the robot is pushed behind or ahead, it still
+looks up the correct target for its current position instead of trying to catch up to a clock.
+
+## Using Profiled Builds
+Call `.profiledBuild()` in place of `.quickBuild()` after configuring and tuning your drivetrain constants:
+
+```java
+Path path = Builder.holonomicPath(startPose)
+        // Add path segments, heading interpolation, and constraints.
+        .profiledBuild();
+```
+
+Profiled builds are most useful for paths with high curvature or simultaneous translation and rotation. Point turns also
+support `.profiledBuild()`, although `.quickBuild()` is generally recommended for faster generation and execution.

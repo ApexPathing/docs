@@ -1,0 +1,67 @@
+# Motion Profiling
+---
+A path tells the robot where to go, but it does not tell the robot how fast it should move. Motion profiling fills in that
+missing information by planning a target velocity and acceleration across the movement.
+
+You can think of a path as the shape of a racetrack and a motion profile as the driver's plan. The track alone does not say
+where to accelerate, where to brake, or how quickly a corner can be taken. A motion profile answers those questions before
+the robot begins moving.
+
+## Why Use a Motion Profile?
+Without a profile, the follower must make speed decisions reactively. It can notice that the robot is struggling in a curve
+and slow down, but by then the robot may already be moving too fast. A profile sees the curve ahead of time and begins
+braking early enough to enter it under control.
+
+This provides several advantages:
+
+- The robot can move close to its physical limits without regularly saturating its motors.
+- Acceleration and braking become smoother and more repeatable.
+- Feedforward can provide the expected motor power before an error develops.
+- Velocity and acceleration constraints can be applied to different parts of a path.
+- Less feedback correction is needed, leaving more power available for accurate movement.
+
+Motion profiling is especially helpful when the localizer uses the drivetrain's motor encoders. These encoders measure how
+far the wheels rotate, not how far the robot actually moves across the field. If a wheel slips while accelerating or taking
+a curve, the encoder still reports that rotation as movement and the estimated robot position becomes inaccurate.
+
+A proper profile reduces this problem by keeping acceleration, cornering force, and total motor demand within limits the
+drivetrain can realistically produce. The wheels are less likely to break traction, so their encoder measurements remain a
+better estimate of real movement. A profile cannot prevent every slip caused by contact or field conditions, but it avoids
+creating unnecessary slip through overly aggressive commands.
+
+There are two common ways to decide which point in a motion profile the robot should currently follow: time and
+displacement.
+
+## Time-Based Motion Profiling
+A time-based profile assigns every target state to a time. For example, the robot might be expected to reach a curve after
+`1.5` seconds and finish the path after `3.0` seconds. As the clock advances, the target advances whether the robot keeps up
+or not.
+
+This works well in a predictable environment. The problem appears when the real robot falls behind. A wheel can slip, the
+battery can sag, another robot can make contact, or a mechanism can change the robot's weight distribution. The clock does
+not know that anything went wrong, so it continues moving the target down the path. The follower may then command a large
+correction to catch up, which can cause saturation or make the robot cut across the path.
+
+## Displacement-Based Motion Profiling
+A displacement-based profile assigns every target state to a distance along the path. Instead of asking, "How long have we
+been moving?" the follower asks, "How far along the path are we?"
+
+If the robot is pushed backward, its target does not race ahead without it. The follower continues using the velocity and
+acceleration planned for the robot's current position. Once the disturbance is gone, the robot naturally continues through
+the rest of the profile.
+
+Apex uses this approach. Its generated profile is stored in a lookup table indexed by distance along the path. During each
+update, the follower finds the robot's progress and interpolates the correct target state from that table.
+
+## Why Displacement Wins in Competition
+Time-based profiles can be excellent when the environment is controlled and following an exact schedule is more important
+than recovering from a disturbance. Competitive robotics is rarely that predictable. Field variation, wheel slip, battery
+voltage, collisions, and small localization errors all change how quickly a real robot completes a movement.
+
+Displacement-based profiling keeps the physical plan attached to the path instead of the clock. The robot still slows down
+before the same curve, applies the same planned acceleration at the same location, and recovers without trying to make up
+lost time all at once. This makes it a better fit for fast autonomous movement in an environment where something unexpected
+can happen on any run.
+
+Use [Quick Builds](/docs/quick-builds) when this planning is unnecessary, or continue to
+[Profiled Builds](/docs/profiled-builds) to see how Apex generates a displacement-based profile.

@@ -19,7 +19,7 @@ Choose your localizer type below and follow the steps to configure it.
     }
     ```
     ### Name
-    Replace `"pinpoint"` with the name of your Pinpoint computer in the hardware configuration. 
+    Replace `"pinpoint"` with the name of your Pinpoint odometry computer in the hardware configuration on your driver station. 
 
     ### Resolution
     If you are using goBILDA odometry pods, you can use the predefined resolutions `Pinpoint.GoBildaPods.goBILDA_4_BAR_POD`
@@ -27,7 +27,7 @@ Choose your localizer type below and follow the steps to configure it.
 
     ### Directions and offsets
     Download and run the `OdometryTuner` OpMode from the [OpModes](/docs/opmodes/) page. This will allow you to determine the 
-    correct encoder directions and offsets for your robot. You can manually tune these values if you'd like.
+    correct encoder directions (forward and reverse) and offsets (in whichever unit you select) for your robot. You can manually tune these values if you'd like.
     </Steps>
   </Tabs.Tab>
   <Tabs.Tab>
@@ -44,11 +44,11 @@ Choose your localizer type below and follow the steps to configure it.
     }
     ```
     ### Name
-    Replace `"otos"` with the name of your OTOS sensor in the hardware configuration. 
+    Replace `"otos"` with the name of your OTOS sensor in the hardware configuration on your driver station. 
 
     ### Scalars and offsets
     Download and run the `OdometryTuner` OpMode from the [OpModes](/docs/opmodes/) page. This will allow you to determine the 
-    correct scalars and offsets for your robot. You can manually tune these values if you'd like.
+    correct scalars and offset values for your robot. You can also manually tune these values.
     </Steps>
   </Tabs.Tab>
   <Tabs.Tab>**Three Wheel Odometry Localizer**</Tabs.Tab>

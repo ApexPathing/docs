@@ -1,4 +1,4 @@
 export default {
-    "pds" : "PDS",
+    "pds" : "PDS Controller",
     "mecanum-drive" : "Mecanum Drive Controller",
 }

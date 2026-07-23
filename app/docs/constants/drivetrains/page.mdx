@@ -1,8 +1,12 @@
-import { Tabs, Steps } from 'nextra/components'
+import { Tabs, Steps, Callout} from 'nextra/components'
 
 # Drivetrain Constants
 ---
 Choose your drivetrain type below and follow the steps to configure it.
+
+<Callout type="warning">
+    Make sure that at the last line of every configuration section you add a semicolon
+</Callout>
 
 <Tabs items={['Mecanum', 'Tank', 'Coaxial Swerve', 'Differential Swerve', "Kiwi", 'Dual Actuated']}>
   <Tabs.Tab>

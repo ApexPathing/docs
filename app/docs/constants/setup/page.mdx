@@ -2,7 +2,8 @@ import { Steps, Table, Callout } from 'nextra/components'
 
 # Constants Setup and Testing
 ---
-The constants class is where information about your robot is stored in order to make the library function. 
+The constants file is where information about your robot is stored in order to make the library function. 
+Think of it as the blueprint, it holds all the most important data for your robot.
 It holds two subconfigs:
 * **Drivetrain Constants:** Defines your drivetrain type and information about it
 * **Localizer Constants:** Defines how your robot tracks its position on the field
@@ -10,7 +11,7 @@ It holds two subconfigs:
 ## Defining Constants
 <Steps>
 ### Open `Constants.java`
-In Android Studio, double press the shift key to open the search prompt and search for 
+Open Android Studio and double click the shift key to open the search prompt. Search for 
 `TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Constants.java`. When you press enter, the constants class will open.
 
 ### Drivetrain Constants
@@ -76,8 +77,7 @@ You should be able to drive the robot like a normal TeleOp OpMode.
 
 <Callout type="info">
     If the above checks do not pass, your robot will not behave correctly. First check the troubleshooting section at
-    the bottom of this page, and if you still can't figure out the issue, reach out in the Discord and we will help you 
-    get it sorted out!
+    the bottom of this page, and if you still can't figure out the issue, reach out on Discord and we would be happy to offer some assistance. 
 </Callout>
 </Steps>
 
@@ -93,4 +93,4 @@ If your robot isn't behaving as expected, here are some common issues to check f
 
 ## Tuning
 The last step before being able to run your first path is tuning the follower. Don't worry, it's automatic!
-The [tuning guide](/docs/tuning/overview) will show you how to run the tuner.
+The [tuning guide](/docs/tuning) will show you how to run the tuner.

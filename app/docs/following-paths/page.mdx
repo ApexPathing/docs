@@ -31,7 +31,7 @@ while (opModeIsActive()) {
 }
 ```
 
-The second is to use the `isBusy()` method of the `Follower` class to determine when the follower 
+The second option is to use the `isBusy()` method of the `Follower` class to determine when the follower 
 is done with a path. This method may be more familiar to some teams.
 
 ```java
@@ -78,7 +78,7 @@ while (opModeIsActive()) {
 ```
 
 ## Command System Integration
-We provide commands and examples for integrating Apex into the most popular command libraries in FTC.
+We also provide commands and examples for integrating Apex into the most popular command libraries in FTC.
 These can be adapted to work with your specific command library.
 <Tabs items={['FTCLib', 'NextFTC', 'Solverslib', 'Ivy']}>
     <Tabs.Tab>
@@ -131,7 +131,7 @@ These can be adapted to work with your specific command library.
         ```
     </Tabs.Tab>
     <Tabs.Tab>
-        We recommend using this command method to integrate Apex into NextFTC's command system.
+        We recommend using the following command method to integrate Apex Pathing into NextFTC's command system.
         It is a simple command that takes in a `Follower` and a `FollowerMovement`.
 
         ```java

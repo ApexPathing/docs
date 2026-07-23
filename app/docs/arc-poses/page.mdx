@@ -10,20 +10,20 @@ more controlled arc around that specific point without needing to micromanage a 
 points. Essentially, Arc Poses facilitate intricate, advanced pathing in a more efficient way by reducing
 the number of control points required and handling the math with the user ever needing to perform a single calculation.
 
-## Why use Arc Poses?
-To best understand why Arc Poses are so incredibly helpful, let's look at a case study using the field from 
-the 2023-2024 FIRST Tech Challenge season, *Centerstage*. In this game, a highly desirable trajectory 
-involved grabbing white pixels from the audience side of the field and bringing them to the backdrops to be scored.
+## Why Use Arc Poses?
+To best understand why Arc Poses are helpful, let's look at a case study using the field from 
+the 2023-2024 FIRST Tech Challenge season, *Centerstage*. In this game, the goal was to grab white pixels from the audience side
+and to bring them to the backdrop to be scored.
 
 <img src={img_base + "pic1.png"} alt="Initial straight line trajectory" className={img_class} />
 
 However, this straightforward trajectory is a problem. It wouldn't work in a real match because field elements 
-(such as purple pixels or markers) are directly in the way that risk being de-scored or hindering the robot's movement. 
-The logical solution is to route through the alternative opening to the left, shaping the trajectory like this:
+(such as purple pixels or markers) would be directly in the way of the path.
+One way of solving this problem is to create a route through the alternative opening to the left, giving the trajectory a more round shape like this:
 
 <img src={img_base + "pic2.png"} alt="Trajectory hitting the field structure" className={img_class} />
 
-This presents a new problem: the robot will collide with the field structure. To avoid this our instinct might be to 
+This presents a new issue: the robot will collide with the field structure. One solution is to 
 add another control point to pull the path away from the obstacles.
 
 <img src={img_base + "pic3.png"} alt="Trajectory with one added control point" className={img_class} />
@@ -40,12 +40,12 @@ replace poses 3 and 5 with Arc Poses and delete pose 4:
 
 <img src={img_base + "pic5.png"} alt="Trajectory optimized with Arc Poses" className={img_class} />
 
-The trajectory goes exactly where we want it, but with **one less pose**! Our API is simplified, the codebase is 
+The trajectory is more efficient and goes exactly where we want it, with **one less pose**! Our API is simplified, the codebase is 
 cleaner, and the poses—though not directly interpolated—are far closer to where you would intuitively expect 
 them to go on the field.
 
 
-## How do Arc Poses work?
+## How Do Arc Poses Work?
 Arc Poses work by dynamically generating two extra "invisible" control points on the spline. 
 These points are placed exactly $R$ distance away from the Arc Pose coordinate, plotted along the vectors 
 pointing toward the two adjacent poses.

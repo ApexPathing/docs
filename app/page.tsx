@@ -19,7 +19,7 @@ const tutorials: TutorialProps[] = [
   {
     name: "Getting Started",
     description: "Learn the basics of Apex Pathing and how to get started with your robot.",
-    docs_link: "/docs/installation"
+    docs_link: "/docs/installation/"
   },
   {
     name: "Following Paths",

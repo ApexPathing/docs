@@ -7,12 +7,10 @@ You can think of a path as the shape of a racetrack and a motion profile as the 
 where to accelerate, where to brake, or how quickly a corner can be taken. A motion profile answers those questions before
 the robot begins moving.
 
-## Why Use a Motion Profile?
-Without a profile, the follower must make speed decisions reactively. It can notice that the robot is struggling in a curve
+## Advantages of Motion Profiling
+Without a motion profile, the follower must make speed decisions reactively. It can notice that the robot is struggling in a curve
 and slow down, but by then the robot may already be moving too fast. A profile sees the curve ahead of time and begins
-braking early enough to enter it under control.
-
-This provides several advantages:
+braking early enough to enter it under control. Motion profiling is kind of like having a plan ahead of time rather than making decisions on the fly.
 
 - The robot can move close to its physical limits without regularly saturating its motors.
 - Acceleration and braking become smoother and more repeatable.
@@ -24,9 +22,9 @@ Motion profiling is especially helpful when the localizer uses the drivetrain's 
 far the wheels rotate, not how far the robot actually moves across the field. If a wheel slips while accelerating or taking
 a curve, the encoder still reports that rotation as movement and the estimated robot position becomes inaccurate.
 
-A proper profile reduces this problem by keeping acceleration, cornering force, and total motor demand within limits the
-drivetrain can realistically produce. The wheels are less likely to break traction, so their encoder measurements remain a
-better estimate of real movement. A profile cannot prevent every slip caused by contact or field conditions, but it avoids
+A proper profile reduces this problem by keeping acceleration and total motor demand within limits a
+drivetrain can realistically produce. The wheels are less likely to slip, so their encoder measurements are a
+better estimate of real movement. A profile cannot prevent all slippage caused by contact or field conditions, but it avoids
 creating unnecessary slip through overly aggressive commands.
 
 There are two common ways to decide which point in a motion profile the robot should currently follow: time and
@@ -48,14 +46,12 @@ been moving?" the follower asks, "How far along the path are we?"
 
 If the robot is pushed backward, its target does not race ahead without it. The follower continues using the velocity and
 acceleration planned for the robot's current position. Once the disturbance is gone, the robot naturally continues through
-the rest of the profile.
-
-Apex uses this approach. Its generated profile is stored in a lookup table indexed by distance along the path. During each
+the rest of the profile. Its generated profile is stored in a lookup table indexed by distance along the path. During each
 update, the follower finds the robot's progress and interpolates the correct target state from that table.
 
 ## Why Displacement Wins in Competition
 Time-based profiles can be excellent when the environment is controlled and following an exact schedule is more important
-than recovering from a disturbance. Competitive robotics is rarely that predictable. Field variation, wheel slip, battery
+than recovering from a disturbance. Competitive robotics is rarely predictable. Field variation, wheel slip, battery
 voltage, collisions, and small localization errors all change how quickly a real robot completes a movement.
 
 Displacement-based profiling keeps the physical plan attached to the path instead of the clock. The robot still slows down

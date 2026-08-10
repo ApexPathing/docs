@@ -1,7 +1,7 @@
 # Quick Builds
 ---
-Quick Builds, created by calling `.quickBuild()` in a movement builder, skip the full motion profiling process. This makes
-them extremely fast to generate and allows the follower to decide how fast to move while the robot is already following the
+Quick Builds can be created by calling `.quickBuild()` in a movement builder. This skips the full motion profiling process. This allows paths to 
+ generate very fast  and allows the follower to decide how fast to move while the robot is already following the
 path.
 
 For a holonomic drivetrain, a quick build stores only the path geometry and heading interpolation. During every follower

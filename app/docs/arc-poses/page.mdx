@@ -10,7 +10,7 @@ more controlled arc around that specific point without needing to micromanage a 
 points. Essentially, Arc Poses facilitate intricate, advanced pathing in a more efficient way by reducing
 the number of control points required and handling the math with the user ever needing to perform a single calculation.
 
-## Why Use Arc Poses?
+## Arc Pose Advantages
 To best understand why Arc Poses are helpful, let's look at a case study using the field from 
 the 2023-2024 FIRST Tech Challenge season, *Centerstage*. In this game, the goal was to grab white pixels from the audience side
 and to bring them to the backdrop to be scored.
@@ -34,7 +34,7 @@ points to constrain the path.
 
 <img src={img_base + "pic4.png"} alt="Trajectory with multiple added control points" className={img_class} />
 
-Nice! We finally have a path shaped exactly how we want it, all thanks to the local control of the B-Spline.
+We finally have a path shaped exactly how we want it, all thanks to the local control of the B-Spline.
 **However, it would be far easier—and cleaner—if we had just utilized Arc Poses.** Let's see what happens when we 
 replace poses 3 and 5 with Arc Poses and delete pose 4:
 
@@ -45,7 +45,7 @@ cleaner, and the poses—though not directly interpolated—are far closer to wh
 them to go on the field.
 
 
-## How Do Arc Poses Work?
+## How Arc Poses Work
 Arc Poses work by dynamically generating two extra "invisible" control points on the spline. 
 These points are placed exactly $R$ distance away from the Arc Pose coordinate, plotted along the vectors 
 pointing toward the two adjacent poses.

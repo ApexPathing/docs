@@ -51,8 +51,94 @@ Choose your localizer type below and follow the steps to configure it.
     correct scalars and offset values for your robot. You can also manually tune these values.
     </Steps>
   </Tabs.Tab>
-  <Tabs.Tab>**Three Wheel Odometry Localizer**</Tabs.Tab>
-  <Tabs.Tab>**Two Wheel Odometry Localizer**</Tabs.Tab>
-  <Tabs.Tab>**Octoquad Localizer**</Tabs.Tab>
-  <Tabs.Tab>**Drive Encoder Localizer**</Tabs.Tab>
+  <Tabs.Tab>
+    <Steps>
+   ### Replace `localizerConfig()`
+    ```java
+    @Override
+    public BaseLocalizerConstants<?> localizerConstants() {
+        return new ThreeWheel.Constants()
+                .setForwardLeftPodName("leftPod")
+                .setForwardRightPodName("rightPod")
+                .setStrafePodName("strafePod")
+                .setTicksPerInch(504.83)
+                .setOffsets(new Vector(Dist.fromIn(5), Dist.fromIn(3)));
+    }
+    ```
+    ### Names
+    Name your pods appropriately as they are named in your hardware configuration on the driver station.
+
+    ### Scalars and offsets
+    Download and run the `OdometryTuner` OpMode from the [OpModes](/docs/opmodes/) page. This will allow you to determine the 
+    correct scalars and offset values for your robot. You can also manually tune these values.
+    </Steps>
+  </Tabs.Tab>
+  <Tabs.Tab>
+    <Steps>
+   ### Replace `localizerConfig()`
+    ```java
+    @Override
+    public BaseLocalizerConstants<?> localizerConstants() {
+        return new TwoWheel.Constants()
+                .setForwardPodName("forwardPod")
+                .setStrafePodName("strafePod")
+                .setTicksPerInch(504.83)
+                .setIMUName("imu")
+                .setOffsets(new Vector(Dist.fromIn(5), Dist.fromIn(3)));
+    }
+    ```
+    ### Names
+    Name your pods appropriately as they are named in your hardware configuration on the driver station.
+
+    ### Scalars and offsets
+    Download and run the `OdometryTuner` OpMode from the [OpModes](/docs/opmodes/) page. This will allow you to determine the 
+    correct scalars and offset values for your robot. You can also manually tune these values.
+    </Steps>
+
+  </Tabs.Tab>
+  <Tabs.Tab>
+    <Steps>
+   ### Replace `localizerConfig()`
+    ```java
+    @Override
+    public BaseLocalizerConstants<?> localizerConstants() {
+        return new Octoquad.Constants()
+                .setName("octoquad")
+                .setOffsets(5, 5, DistUnit.IN)
+                .setPorts(1, 2)
+                .setEncoderResolution(Dist.fromMm(1))
+                .setYawScalar(2);
+    }
+    ```
+    ### Names
+    Name your Octoquad appropriately as it is named in your hardware configuration on the driver station.
+
+    ### Scalars and offsets
+    Download and run the `OdometryTuner` OpMode from the [OpModes](/docs/opmodes/) page. This will allow you to determine the 
+    correct scalars and offset values for your robot. You can also manually tune these values.
+    </Steps>
+  </Tabs.Tab>
+  <Tabs.Tab>
+  <Steps>
+   ### Replace `localizerConfig()`
+    ```java
+    @Override
+    public BaseLocalizerConstants<?> localizerConstants() {
+        return new DriveEncoders.Constants()
+                .setBackLeftName("bl")
+                .setBackRightName("br")
+                .setFrontLeftName("fl")
+                .setFrontRightName("fr")
+                .setTicksPerInch(280)
+                .setIMUName("imu");
+    }
+    ```
+    ### Names
+    Name your DriveEncoders appropriately as they are named in your hardware configuration on the driver station.
+
+    ### Scalars and offsets
+    Download and run the `OdometryTuner` OpMode from the [OpModes](/docs/opmodes/) page. This will allow you to determine the 
+    correct scalars and offset values for your robot. You can also manually tune these values.
+    </Steps>
+  </Tabs.Tab>
 </Tabs>

@@ -1,0 +1,339 @@
+import { Callout } from 'nextra/components'
+
+# General Overview
+This page aims to break down Apex's core algorithms for path following into a single understandable overview.
+Apex is a complex library with tens of thousands of lines of code; however, the follower class itself is less than 1000
+lines of code and the actual algorithm that drives a mecanum robot is less than 100 lines! If you can understand those
+100 lines of code, you can understand Apex and the purpose of each empirical constant. You can look through the code
+[Follower.java](https://github.com/ApexPathing/ApexPathing/blob/main/TeamCode/src/main/java/core/Follower.java)
+yourself throughout this explanation if you'd like, but this will be focused on the math and logic behind the algorithm
+rather than code.
+
+### Concept \#1: The Goal of Path Following
+The premise of path following—translating a robot between two points—appears simple on the surface. Yet, developing an
+intuition for these algorithms requires examining their underlying motivations. Especially in FTC, this objective comes
+with a hidden set of constraints that have to be managed.
+
+For example, speed is a consideration. You probably want your robot to go as fast as possible, but you don't want to
+sacrifice control and accuracy to do so. Additionally, pathing isn't always in a straight line. Obstacles have to be
+avoided, which in turn leads to the need for curves and complex geometry. Considering these constraints and others, we
+can derive a more generalized statement to better define the motivation for creating an advanced path follower for FTC.
+
+The objective of path following is to accurately track a pre-defined trajectory, minimizing the error between the robot's
+actual state and its target Cartesian (x, y) position, heading, velocity, and acceleration. Represented mathematically:
+
+Target state:
+$$
+X_{target}(t) = \begin{bmatrix} x_d(t) \\ y_d(t) \\ \theta_d(t) \\ v_{xd}(t) \\ v_{yd}(t) \\ \omega_d(t) \\ a_{xd}(t)
+\\ a_{yd}(t) \\ \alpha_d(t) \end{bmatrix} \begin{array}{l} \left. \begin{array}{l} \\ \\ \\ \end{array} \right\}
+\text{Target Cartesian Position & Heading} \\ \left. \begin{array}{l} \\ \\ \\ \end{array} \right\} \text{Target Linear
+ & Angular Velocity} \\ \left. \begin{array}{l} \\ \\ \\ \end{array} \right\} \text{Target Linear & Angular Acceleration} \end{array}
+$$
+
+Actual state:
+$$
+X_{actual}(t) = \begin{bmatrix} x(t) \\ y(t) \\ \theta(t) \\ v_x(t) \\ v_y(t) \\ \omega(t) \\ a_x(t) \\ a_y(t)
+\\ \alpha(t) \end{bmatrix} \begin{array}{l} \left. \begin{array}{l} \\ \\ \\ \end{array} \right\} \text{Actual Cartesian
+Position & Heading} \\ \left. \begin{array}{l} \\ \\ \\ \end{array} \right\} \text{Actual Linear & Angular Velocity} \\
+\left. \begin{array}{l} \\ \\ \\ \end{array} \right\} \text{Actual Linear & Angular Acceleration} \end{array}
+$$
+
+Objective:
+$$
+E(t) = X_{target}(t) - X_{actual}(t) \approx \mathbf{0}
+$$
+
+### Concept \#2: Controlling a one dimensional state
+Big matrices are intimidating, but the problem is simplified when we break down the states into their one-dimensional
+components: x, y, and heading. If we can control one of these, it's reasonable to assume that we can apply the same methods
+to all of them. We can further break down each of these 3 components into their subcomponents: position, velocity, and acceleration.
+If we know how to control each of these individually, we can combine the responses into one response that minimizes the error
+in the system.
+
+### Concept \#3: Feedback control
+Feedback control works by measuring a system's current output and comparing it to a target goal. It then uses the
+difference—or error—between the two to adjust the inputs and correct the system. This is useful for controlling the position
+of our robot state because we can accurately and quickly move towards a point given the right approach. While better
+feedback systems such as Linear Quadratic Regulators exist, Apex uses three simple feedback components in its positon
+controller: proportional, derivative, and static compensation (static is technically feedforward, but it is mentioned here
+since its output is determined by the sign of the error and for clarity).
+
+Proportional control comes from a simple idea: the farther you are from a target, the more you want to go towards it.
+In the case of a proportional component, we scale our response proportional to our error (distance from the target).
+
+Mathematically, this is expressed as:
+
+$$u_p(t) = K_p \cdot e(t)$$
+
+Where:
+* **$u_p(t)$** is the proportional control output (e.g., motor power) at a given time $t$.
+* **$K_p$** is the proportional gain, a tuned constant that determines how aggressively the system reacts to the error.
+* **$e(t)$** is the current error, calculated as the difference between the target state and the actual state ($Target - Actual$).
+
+Derivative control only works to oppose the proportional gain. The reason that the proportional gain is opposed is to
+avoid overshoot and improve response times - the robot can move fast towards the target and then predictively slow down
+to avoid going past the intended point. This component works by multiplying a gain constant by the derivative of the error
+with respect to time. For those unfamiliar with calculus, the derivative represents the instantaneous rate of change of
+the error, effectively acting as a prediction of where the robot will be in the immediate future. In robotics, we estimate
+the derivative with finite differences between fast update loops.
+
+Mathematically this is expressed as:
+
+$$u_d(t) = K_d \cdot \frac{de(t)}{dt}$$
+
+Where:
+* **$u_d(t)$** is the derivative control output at a given time $t$.
+* **$K_d$** is the derivative gain, a tuned constant that determines how heavily the system dampens the movement based on the error's rate of change.
+* **$\frac{de(t)}{dt}$** is the derivative of the error with respect to time, representing how fast the error is shrinking or growing.
+
+Lastly, in order for the system to converge properly on its target, we add a constant static power in the direction
+we need to go that's tuned to break past static friction. Without this, the system has extreme difficulty correcting for
+small errors because the driving proportional gain approaches zero response close to the target. Breaking the barrier of
+static friction losses guarantees that even the smallest of proportional outputs will continue to push the system towards
+its target.
+
+Mathematically, this is just a constant value, but we can use the Java function `Math.signum()` which returns the sign value
+(-1 or 1 respectively) of a number to apply the power in the correct direction.
+
+$$u_s(t) = K_s \cdot signum(e(t))$$
+
+Where:
+* **$u_s(t)$** is the static control output (or static feedforward power) applied at a given time $t$.
+* **$K_s$** is the static gain, a tuned constant representing the minimum motor power required to overcome the physical static friction of the drivetrain.
+* **$signum(e(t))$** determines the direction of the output. It returns $1$ if the error is positive and $-1$ if the error is negative, ensuring the static power always pushes the robot toward the target.
+* **$e(t)$** is the current error.
+
+Putting these components together, we get a powerful [PDS feedback controller](/docs/controllers/pds) that can allow any
+robot to converge on a target position extremely quickly.
+
+$$u_s(t) = K_p \cdot e(t) + K_d \cdot \frac{de(t)}{dt} + K_s \cdot signum(e(t))$$
+
+### Concept \#4: Feedforward control
+While feedback control is excellent at correcting errors, it is fundamentally reactive. It calculates motor outputs based
+solely on the current error, with no knowledge of the overall path or the robot's physical momentum.
+
+To illustrate the difference, imagine driving a car on a winding road in thick fog. You can only see the lane lines directly
+outside your window. You don't know a sharp turn is coming until you are already drifting out of your lane, forcing you to
+continually jerk the steering wheel to correct yourself. This is pure feedback control.
+
+Now, imagine driving that same road on a clear day. You see the curves ahead, and because you know how your car handles,
+you naturally adjust your steering and speed before the curve even starts. This is feedforward. In robotics, feedforward
+uses the pre-planned trajectory and the robot's physical limits to calculate exactly how much power is needed at any given
+moment. Feedback is then simply used as a safety net to correct unpredictable disturbances.
+
+To control a DC motor with feedforward, the following equation is typically used:
+
+$$p_{out}(t) = K_v \cdot v_{targ}(t) + K_a \cdot a_{targ}(t)$$
+
+Where:
+* **$p_{out}(t)$** is the feedforward power output at a given time *$t$*.
+* **$K_v$** is the velocity gain. It represents the baseline motor power required to cruise at a constant velocity.
+* **$v_{targ}(t)$** is the target velocity of the system at time *$t$*.
+* **$K_a$** is the acceleration gain. It represents the additional power required to overcome inertia and accelerate the
+robot's mass.
+* **$a_{targ}(t)$** is the target acceleration of the system at time *$t$*.
+
+We can model DC motors this way because, in a perfect system, motor voltage (power) scales proportionally to the desired
+speed and the desired rate of change in speed. If you want the robot to cruise steadily, the $K_v$ term supplies just
+enough power to maintain that speed against constant friction. If you need to speed up quickly, the $K_a$ term kicks in
+to provide the extra "punch" needed to overcome inertia. Conversely, if you command the robot to slow down (negative
+acceleration), the $K_a$ term subtracts power, effectively acting as an electronic brake.
+
+### Concept \#5: Distance over Duration
+Traditionally, feedforward targets ($v_{targ}$ and $a_{targ}$) are calculated based on elapsed time. The robot asks,
+*"How fast should I be moving at $t = 3$ seconds?"*
+
+However, this introduces a critical flaw in FTC. If your robot's voltage (forward power) drops because of other movements,
+gets hit, or experiences wheel slip, it falls behind schedule. Time keeps integrating, and a time-based controller will output power
+based on where the robot *should* be in time, ignoring the fact that it physically hasn't reached that part of the path
+yet. This issue is usually mitigated with feedback corrections to try to keep up with the moving reference point, but allowing
+adequate room for feedback control means keeping the robot's speed below its maximum velocity to leave room for corrections.
+Without reducing speed, the robot will simply diverge from its target state.
+
+To solve this, Apex uses **displacement-based** feedforward. Instead of asking what the
+power should be at a certain *time* ($t$), the controller asks what the power should be at a certain *distance* ($s$)
+traveled along the path.
+
+The math looks structurally identical, but our target variables are now parameterized by arc length ($s$) rather than time ($t$):
+
+$$p_{out}(s) = K_v \cdot v_{targ}(s) + K_a \cdot a_{targ}(s)$$
+
+By linking the target kinematics to the physical distance traveled, the feedforward output remains synchronized
+with the robot's actual position on the field.
+
+<Callout type="info">
+To read more on how Apex plans the feedforward for a path, check out the [Profiled Builds](/docs/profiled-builds) page.
+</Callout>
+
+### Concept \#6: Feedback + feedforward
+We can combine our feedback and feedforward controllers together to make a powerful controller that can accurately control
+one of our drive components (x, y, θ). The only extra detail needed to control a component that hasn't been discussed
+is the need for velocity feedback control. Since there is no moving reference point in displacement-based motion profiling
+for a position feedback controller to keep up with, a proportional controller on the error between target velocity and measured velocity
+is necessary in order to apply more effort in the event the robot gets stuck.
+
+This velocity proportional control is defined as:
+
+$$u_{vp}(t) = K_{vp} \cdot (v_{targ}(s) - v_{actual}(t))$$
+
+Where:
+* **$u_{vp}(t)$** is the velocity feedback power output.
+* **$K_{vp}$** is the velocity proportional gain.
+* **$v_{targ}(s)$** is the target velocity at the current distance $s$.
+* **$v_{actual}(t)$** is the measured real-world velocity at time $t$.
+
+With this velocity proportional controller in place alongside our PDS position feedback and our displacement-based feedforward,
+we finally have the full mathematical means to control a single component of robot movement. The total commanded power
+is simply the sum of all these outputs:
+
+$$
+\begin{aligned}
+Output_{total} &= Feedforward(s) + Feedback_{pos}(t) + Feedback_{vel}(t)
+\end{aligned}
+$$
+Fully expanded into its mathematical components, the final control equation for a single axis looks like this:
+
+$$
+\begin{aligned}
+u_{total} &= K_v \cdot v_{targ}(s) + K_a \cdot a_{targ}(s) && \bigg\} \text{ Feedforward} \\
+&\quad + K_p \cdot e(t) + K_d \cdot \frac{de(t)}{dt} + K_s \cdot signum(e(t)) && \bigg\} \text{ Position Feedback} \\
+&\quad + K_{vp} \cdot (v_{targ}(s) - v_{actual}(t)) && \bigg\} \text{ Velocity Feedback}
+\end{aligned}
+$$
+
+### Concept \#7: Centripetal force correction
+In order to go around tight curves accurately, the robot must account for centripetal forces that would otherwise keep it
+off of it's intended path. We can measure the amount of centripel force in a curve by the following equation:
+
+$$F_c = \frac{mv^2}{r}$$
+
+In order to change force into a usable motor power, we must consider the dynamics of a DC motor. Generally, motor voltage
+is not directly proportional to output force, as it must first overcome back-EMF proportional to the motor's velocity.
+However, assuming the robot accurately tracks the trajectory, its lateral velocity relative to the path is zero. With
+negligible lateral back-EMF, the voltage required to counteract centripetal acceleration becomes directly proportional
+to the centripetal force itself. Rather than calculating the robot’s exact mass and the physical torque-to-voltage
+conversion, we can group mass and these conversions into a single tunable empirical constant. By substituting this
+constant ($K_c$) into the equation to replace mass and our proportional constants, we arrive at the final required
+centripetal power:
+
+$$u_c = \frac{v^2 \cdot K_c}{r}$$
+
+### Concept \#8: Power Allocation and Saturation
+Motors have a fundamental physical limit: they can only provide 100% power (a value of `1.0`). Setting a motor past `1.0`
+power doesn't magically increase its output; it just caps out, or *saturates*.
+
+If our controllers ask for `0.8` power to move forward, `0.5` power to correct a lateral drift, and `0.4` power to fix
+our heading, the total demand is `1.7`. If we blindly send that to the drivetrain, the motors will saturate at `1.0`.
+The robot will lose its carefully calculated proportions, causing it to drift off the path or spin unpredictably.
+
+To solve this, Apex implements a strict **power allocation budget**. The algorithm ranks the movements by importance and
+hands out the available power in stages, ensuring the most critical corrections always get the power they need.
+
+#### 1. Feedback Priority
+Typically, the two most important things a robot must do are point in the correct direction (heading) and stay physically
+on the path (lateral/cross-track). If we lose either of these, the trajectory is ruined. Therefore, feedback should always
+be prioritized over feedforward control in the case of saturation.
+
+By default, Apex allocates power to the turning controller first. Whatever power is left over becomes the budget for
+lateral correction:
+$$Power_{available} = 1.0 - |Power_{turn}|$$
+
+*(Note: The code also allows you to flip this priority using `prioritizeCentripetal`. If staying glued to a high-speed
+curve is more critical than looking at the right angle, lateral correction gets the full `1.0` budget first, and turning
+gets the leftovers!)*
+
+#### 2. Tangential (Forward) Power
+Moving forward along the path is actually the lowest priority. It is always better for the robot to slow down and stay
+strictly on the path than to barrel forward and crash.
+
+The tangential controller is only allowed to use whatever budget remains after the turn and lateral commands have taken
+their share. Because different drivetrains apply power differently, this leftover budget is calculated in two ways:
+
+* **For Mecanum Drives (L1 Demand):** Mecanum wheels combine orthogonal translation linearly. The budget is simple
+subtraction:
+$$Budget_{tangent} = \max(0.0, Power_{available} - Demand_{lateral})$$
+
+* **For Isotropic/Swerve Drives (L2 Demand):** Swerve drives combine vectors geometrically by magnitude. The budget uses
+the Pythagorean theorem:
+$$Budget_{tangent} = \sqrt{\max(0.0, Power_{available}^2 - Demand_{lateral}^2)}$$
+
+#### Resulting output
+Once the tangent budget is calculated, the algorithm bounds the `totalTangentPower` (our combined forward feedforward
+and feedback) to fit inside that remaining budget.
+
+By enforcing this hierarchy, Apex effectively helps the robot maintain accurate heading and lateral tracking.
+If the controller demands more than 100% power, the robot will attempt to slow down its forward speed to stay
+in control.
+
+### Concept \#9: Tying It All Together
+In Concept \#1, we defined the ultimate goal of path following: minimizing the error between a massive target state
+matrix and our actual state matrix so that $X_{target}(t) - X_{actual}(t) \approx \mathbf{0}$.
+
+All the math, controllers, and prioritization logic we just covered are the tools we use to solve that equation. They
+do not just run once; they execute every single update—often hundreds of times per second. Every time the loop runs, the
+robot re-evaluates its situation and adjusts its motor powers to force that error toward zero.
+
+Here is the step-by-step breakdown of how the code builds our final command without any vague magic:
+
+#### Step 1: Localization & Projection (Where are we?)
+The loop starts by querying the localizer (odometry) for the robot's current Cartesian coordinates $(x, y)$ and measured
+heading $\theta(t)$. It then mathematically projects this $(x, y)$ position onto the closest geometric point of the
+planned path. This projection provides the controller with the current scalar distance traveled along the path ($s$) and
+the raw positional error vector.
+
+#### Step 2: Path Geometry (What does the path look like here?)
+Using the closest point found in Step 1, the algorithm calculates the physical geometry of the path at that exact
+location. It derives the **unit tangent vector** ($\hat{t}$, representing the instantaneous forward direction) and the
+**unit normal vector** ($\hat{n}$, representing the perpendicular cross-track direction). It also evaluates the path's
+radius of curvature ($r$) to prepare for the centripetal force calculations.
+
+#### Step 3: Target Kinematics (How should we be moving?)
+By feeding the distance traveled ($s$) into the motion profile, the algorithm retrieves the exact target kinematics for
+this moment: the planned forward velocity ($v_{targ}(s)$) and the planned forward acceleration ($a_{targ}(s)$).
+
+#### Step 4: Heading Control (Orientation)
+The robot compares its measured heading $\theta(t)$ to the trajectory's target heading $\theta_d(s)$ to find the angular
+error. It calculates the necessary angular feedforward ($FF_{\theta}$, derived from target angular velocity and acceleration)
+and adds it to the Proportional-Derivative-Static feedback components ($FB_{\theta}$). This combined rotational power is
+then strictly clipped to the motor's physical limits:
+
+$$u_{turn} = \text{clip}\Big(FF_{\theta}(s) + FB_{\theta}(t), -1.0, 1.0\Big)$$
+
+#### Step 5: Lateral Control (Cross-Track)
+The robot isolates its lateral drift by projecting the raw positional error vector from Step 1 onto the unit normal
+vector ($\hat{n}$). This scalar cross-track error is evaluated through a PDS position controller to calculate the lateral
+feedback correction ($FB_{lat}$). To prevent the robot from sliding out of the curve, the algorithm adds the centripetal
+feedforward power ($u_c = \frac{v_{actual}^2 \cdot K_c}{r}$). This combined scalar power is then multiplied by $\hat{n}$
+to yield the physical lateral command vector:
+
+$$\vec{u}_{lat} = \left( FB_{lat}(t) + \frac{v_{actual}^2 \cdot K_c}{r} \right) \cdot \hat{n}$$
+
+#### Step 6: Power Allocation (The Budget)
+Before moving forward, the algorithm enforces the saturation budget to guarantee control. It deducts the absolute magnitude
+of the heading correction ($|u_{turn}|$) from the maximum allowable power ($1.0$), then deducts the magnitude of the lateral
+correction ($|\vec{u}_{lat}|$). The remaining power is explicitly defined as the maximum allowable tangential (forward)
+budget: $Budget_{tangent}$.
+
+#### Step 7: Tangential Control (Along-Track)
+The algorithm calculates the forward feedforward power needed to track the motion profile ($FF_{tan} = K_v \cdot v_{targ}
+(s) + K_a \cdot a_{targ}(s)$). It then calculates the velocity proportional feedback ($FB_{vel} = K_{vp} \cdot (v_{targ}(s) - v_{actual}(t))$) to ensure the robot applies extra effort if it physically falls behind the target speed. This requested scalar power is strictly bounded so it does not exceed the $Budget_{tangent}$ calculated in Step 6, and is finally multiplied by the tangent vector ($\hat{t}$):
+
+$$\vec{u}_{tan} = \text{clip}\Big(FF_{tan}(s) + FB_{vel}(t), -Budget_{tangent}, Budget_{tangent}\Big) \cdot \hat{t}$$
+
+#### Step 8: Execution & Completion
+The lateral and tangential vectors are summed to form a single 2D translational vector. Paired with the rotational turn
+power, this creates the final unified command matrix that is sent to the holonomic drivetrain:
+
+$$
+Command_{final} = \begin{bmatrix} Power_x \\ Power_y \\ Power_{\theta} \end{bmatrix} = \begin{bmatrix} (\vec{u}_{lat} +
+\vec{u}_{tan})_x \\ (\vec{u}_{lat} + \vec{u}_{tan})_y \\ u_{turn} \end{bmatrix}
+$$
+
+Finally, the loop checks the physical distance to the path's endpoint. If the robot's positional error, heading error,
+and measured velocities ($v_{actual}$ and $\omega_{actual}$) all fall within the user-defined completion tolerances, the
+loop terminates and the robot successfully stops.
+
+By continuously generating this final command matrix, Apex applies precisely budgeted, physics-informed corrections to
+safely drive the robot to its destination, finally satisfying our original objective:
+
+$$E(t) \approx \mathbf{0}$$

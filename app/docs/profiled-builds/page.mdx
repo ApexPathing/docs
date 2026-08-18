@@ -7,12 +7,15 @@ the robot's physical limits.
 
 ## When Should I Use a Profiled Build?
 Profiled builds are excellent for any path, but they have the most benefit when:
-- The path is built during `initialize` because compute is quite heavy
+- The path is built during `initialize` because compute (generation time) is quite heavy
 - The path has complex geometry that must be followed precisely (i.e. sharp splines near obstacles or other robots)
 - Constraints need to be added to the path (`quickBuild` only allows for translational velocity constraints)
 - Smooth motion is needed
-- Accuracy is prioritized over other goals (i.e. speed)
-- A precise heading interpolation is prioritized other goals (i.e. speed)
+- Accuracy is prioritized is a priority
+- A precise heading interpolation is a priority
+
+Good rule of thumb: use profiled builds instead of quick builds unless you're generating your trajectories on
+the fly during you're autonomous.
 
 ## The Motivation
 Every drivetrain has a problem that plagues it: limited power availability. If you have prior programming experience, you
